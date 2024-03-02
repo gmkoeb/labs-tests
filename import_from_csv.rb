@@ -28,6 +28,7 @@ end
 def create_table
   db_connection do |connection|
     connection.exec('CREATE TABLE tests (
+      id SERIAL PRIMARY KEY,
       registration_number VARCHAR(255),
       patient_name VARCHAR(255),
       patient_email VARCHAR(255),
@@ -66,11 +67,12 @@ def populate_table(row)
       doctor_name,
       doctor_email,
       exam_token,
+      exam_date,
       exam_type,
       exam_type_limits,
       exam_type_result
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)',
-    [row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14]])
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16)',
+    [row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7], row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15]])
   end
 end
 
