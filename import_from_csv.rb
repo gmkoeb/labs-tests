@@ -76,4 +76,6 @@ def populate_table(row)
   end
 end
 
-convert_data
+if __FILE__ == $PROGRAM_NAME
+  convert_data
+end

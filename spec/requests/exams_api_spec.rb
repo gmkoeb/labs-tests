@@ -1,6 +1,5 @@
 require 'net/http'
 require 'json'
-require_relative '../../import_from_csv.rb'
 
 describe 'Tests API' do
   context 'GET /tests' do
