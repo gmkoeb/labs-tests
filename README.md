@@ -4,8 +4,7 @@
 - [Instalação e Execução](#instalação-e-execução)
 - [Popular banco de dados](#popular-banco-de-dados)
 - [Testes](#testes)
-
-Para executar a aplicação você deve:
+- [Endpoints](#endpoints)
 
 ## Instalação e Execução
 Para executar a aplicação você deve:
@@ -51,3 +50,35 @@ Para executar os testes, você deve:
 2. Dentro do container:
 
        rspec
+
+## Endpoints
+
+A URL base para os endpoints é http://localhost:3000
+
+1. Lista de exames:
+
+GET /tests
+
+```
+[
+  {
+    "id": "1",
+    "patient_name": "Emilly Batista Neto",
+    "registration_number": "048.973.170-88",
+    "patient_email": "gerald.crona@ebert-quigley.com",
+    "birth_date": "2001-03-11",
+    "address": "165 Rua Rafaela",
+    "city": "Ituverava",
+    "state": "Alagoas",
+    "doctor_name": "Maria Luiza Pires",
+    "doctor_email": "denna@wisozk.biz",
+    "crm": "B000BJ20J4",
+    "crm_state": "PI",
+    "date": "2021-08-05",
+    "token": "IQCZ17",
+    "type": "hemácias",
+    "type_limits": "45-52",
+    "type_result": "97"
+  }
+]
+```
