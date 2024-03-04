@@ -32,6 +32,29 @@ class Patient < Application
     patients
   end
 
+  def self.create(attributes)
+    patient = {}
+    db_connection do |connection|
+      begin
+        patient = connection.exec('
+        INSERT INTO patients (
+          registration_number,
+          name,
+          email,
+          birth_date,
+          address,
+          city,
+          state)
+          VALUES ($1, $2, $3, $4, $5, $6, $7)',
+          [attributes[:registration_number], attributes[:name], attributes[:email],
+           attributes[:birth_date], attributes[:address], attributes[:city], attributes[:state]])
+      rescue PG::Error => e
+        { error: "Error executing SQL query: #{e.message}" }
+      end
+    end
+    patient = Patient.last
+  end
+
   def tests
     tests = []
     db_connection do |connection|

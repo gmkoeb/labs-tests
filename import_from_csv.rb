@@ -18,7 +18,12 @@ end
 
 def db_connection
   begin
-    connection = PG.connect(dbname: 'postgres', user: 'postgres', password: 'postgres', host: 'postgres')
+    dbname = if ENV['RACK_ENV'] == 'test'
+      'test'
+    else
+      'postgres'
+    end
+    connection = PG.connect(dbname:, user: 'postgres', password: 'postgres', host: 'postgres')
     yield(connection)
   rescue PG::Error => e
     puts "Error connecting to database: #{e.message}"
@@ -40,7 +45,6 @@ def create_tables
         city VARCHAR(255),
         state VARCHAR(255)
       );')
-    puts "Table 'patients' created successfully"
 
     connection.exec(
       'CREATE TABLE doctors (
@@ -51,7 +55,6 @@ def create_tables
         crm_state VARCHAR(255),
         UNIQUE (crm, crm_state)
       );')
-    puts "Table 'doctors' created successfully"
 
     connection.exec(
       'CREATE TABLE tests (
@@ -64,7 +67,6 @@ def create_tables
         type_limits VARCHAR(255),
         type_result VARCHAR(255)
       );')
-    puts "Table 'tests' created successfully"
   rescue PG::Error => e
     puts "Error creating table: #{e.message}"
   end
