@@ -52,7 +52,7 @@ class Patient < Application
         { error: "Error executing SQL query: #{e.message}" }
       end
     end
-    patient = Patient.last
+    patient = last
   end
 
   def tests
