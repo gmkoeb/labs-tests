@@ -1,35 +1,31 @@
 require_relative '../import_from_csv.rb'
 require_relative 'application.rb'
 
-class Patient < Application
-  attr_accessor :id, :registration_number, :name, :email, :birth_date, :address, :city, :state
+class Doctor < Application
+  attr_accessor :id, :name, :email, :crm, :crm_state
 
-  def initialize(id:, registration_number:, name:, email:, birth_date:, address:, city:, state:)
+  def initialize(id:, name:, email:, crm:, crm_state:)
     @id = id
-    @registration_number = registration_number
     @name = name
     @email = email
-    @birth_date = birth_date
-    @address = address
-    @city = city
-    @state = state
+    @crm = crm
+    @crm_state = crm_state
   end
 
   def self.all
-    patients = []
+    doctors = []
     db_connection do |connection|
       begin
-        data = connection.exec('SELECT * FROM patients;').to_a
+        data = connection.exec('SELECT * FROM doctors;').to_a
         data.each do |d|
-          patients << Patient.new(id: d['id'].to_i, registration_number: d['registration_number'],
-          name: d['name'], email: d['email'], birth_date: d['birth_date'], address: d['address'],
-          city: d['city'], state: d['state'])
+          doctors << Doctor.new(id: d['id'].to_i, name: d['name'], email: d['email'],
+          crm: d['crm'], crm_state: d['crm_state'])
         end
       rescue PG::Error => e
         { error: "Error executing SQL query: #{e.message}" }
       end
     end
-    patients
+    doctors
   end
 
   def tests
@@ -38,7 +34,7 @@ class Patient < Application
       begin
         data = connection.exec('SELECT *
                                 FROM tests
-                                WHERE patient_id = $1;',
+                                WHERE doctor_id = $1;',
                                 [@id])
 
         data.each do |d|

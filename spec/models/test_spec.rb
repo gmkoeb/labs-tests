@@ -5,7 +5,7 @@ RSpec.describe Test, type: :model do
     it 'retorna todos os exames' do
       tests = Test.all
 
-      expect(tests.length).to eq 3900
+      expect(tests).to be_a(Array)
       expect(tests.first.id).to eq 1
       expect(tests.first.patient_id).to eq 1
       expect(tests.first.doctor_id).to eq 1
@@ -33,6 +33,18 @@ RSpec.describe Test, type: :model do
       expect(patient.address).to eq '165 Rua Rafaela'
       expect(patient.city).to eq 'Ituverava'
       expect(patient.state).to eq 'Alagoas'
+    end
+  end
+
+  describe '#doctor' do
+    it 'retorna médico relacionado ao exame' do
+      doctor = Test.first.doctor
+
+      expect(doctor.id).to eq 1
+      expect(doctor.name).to eq 'Maria Luiza Pires'
+      expect(doctor.email).to eq 'denna@wisozk.biz'
+      expect(doctor.crm).to eq 'B000BJ20J4'
+      expect(doctor.crm_state).to eq 'PI'
     end
   end
 

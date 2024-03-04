@@ -20,6 +20,14 @@ RSpec.describe Application, type: :model do
         expect(first_patient.registration_number).to eq Patient.all[0].registration_number
       end
     end
+    context 'doctors' do
+      it 'retorna o primeiro médico da lista de médicos' do
+        first_doctor = Doctor.first
+
+        expect(first_doctor.id).to eq Doctor.all[0].id
+        expect(first_doctor.name).to eq Doctor.all[0].name
+      end
+    end
   end
 
   describe '#last' do
@@ -35,6 +43,14 @@ RSpec.describe Application, type: :model do
         last_patient = Patient.last
 
         expect(last_patient.id).to eq Patient.all[Patient.all.length - 1].id
+      end
+    end
+    context 'doctors' do
+      it 'retorna o último médico da lista de médicos' do
+        last_doctor = Doctor.last
+
+        expect(last_doctor.id).to eq Doctor.all[Doctor.all.length - 1].id
+        expect(last_doctor.name).to eq Doctor.all[Doctor.all.length - 1].name
       end
     end
   end

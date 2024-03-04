@@ -70,6 +70,24 @@ class Test < Application
     patient
   end
 
+  def doctor
+    doctor = {}
+    db_connection do |connection|
+      begin
+        data = connection.exec('SELECT *
+                                FROM doctors
+                                WHERE id = $1;',
+                                [@doctor_id])
+
+        doctor = Doctor.new(id: data[0]['id'].to_i, name: data[0]['name'], email: data[0]['email'],
+        crm: data[0]['crm'], crm_state: data[0]['crm_state'])
+      rescue PG::Error => e
+        { error: "Error executing SQL query: #{e.message}" }
+      end
+    end
+    doctor
+  end
+
   def as_json
     {
       id: @id,
