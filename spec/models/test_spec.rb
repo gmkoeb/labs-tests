@@ -21,6 +21,21 @@ RSpec.describe Test, type: :model do
     end
   end
 
+  describe '#patient' do
+    it 'retorna paciente relacionado ao exame' do
+      patient = Test.first.patient
+
+      expect(patient.id).to eq 1
+      expect(patient.name).to eq 'Emilly Batista Neto'
+      expect(patient.registration_number).to eq '048.973.170-88'
+      expect(patient.email).to eq 'gerald.crona@ebert-quigley.com'
+      expect(patient.birth_date).to eq '2001-03-11'
+      expect(patient.address).to eq '165 Rua Rafaela'
+      expect(patient.city).to eq 'Ituverava'
+      expect(patient.state).to eq 'Alagoas'
+    end
+  end
+
   describe '#as_json' do
     it 'retorna todos os exames formatados em JSON' do
       result = Test.all.as_json

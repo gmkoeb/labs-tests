@@ -1,7 +1,8 @@
 require_relative '../import_from_csv.rb'
 require_relative '../data_structures/array.rb'
+require_relative 'application.rb'
 
-class Test
+class Test < Application
   attr_accessor :id, :patient_id, :doctor_id, :token, :date, :type, :type_limits, :type_result
 
   def initialize(id:, patient_id:, doctor_id:, token:, date:, type:, type_limits:, type_result:)
@@ -50,6 +51,25 @@ class Test
     tests.to_json
   end
 
+  def patient
+    patient = {}
+    db_connection do |connection|
+      begin
+        data = connection.exec('SELECT *
+                                FROM patients
+                                WHERE id = $1;',
+                                [@patient_id])
+
+        patient = Patient.new(id: data[0]['id'].to_i, registration_number: data[0]['registration_number'],
+        name: data[0]['name'], email: data[0]['email'], birth_date: data[0]['birth_date'], address: data[0]['address'],
+        city: data[0]['city'], state: data[0]['state'])
+      rescue PG::Error => e
+        { error: "Error executing SQL query: #{e.message}" }
+      end
+    end
+    patient
+  end
+
   def as_json
     {
       id: @id,
@@ -62,5 +82,4 @@ class Test
       type_result: @type_result
     }
   end
-
 end
