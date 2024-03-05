@@ -1,4 +1,10 @@
 require_relative '../import_from_csv.rb'
+require_relative '../models/patient.rb'
+require_relative '../models/doctor.rb'
+require_relative '../models/test.rb'
+require_relative '../models/application.rb'
+require 'net/http'
+require 'json'
 
 ENV['RACK_ENV'] = 'test'
 # frozen_string_literal: true

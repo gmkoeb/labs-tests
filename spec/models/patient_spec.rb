@@ -1,6 +1,4 @@
-require_relative '../../models/patient.rb'
-require_relative '../../models/doctor.rb'
-require_relative '../../models/test.rb'
+require 'spec_helper'
 
 RSpec.describe Patient, type: :model do
   describe '#all' do

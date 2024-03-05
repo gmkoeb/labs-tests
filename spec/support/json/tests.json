@@ -1,0 +1,21 @@
+[
+  {
+    "id": "1",
+    "patient_name": "Paciente Teste",
+    "registration_number": "123456789",
+    "patient_email": "teste@email.com",
+    "birth_date": "1997-01-01",
+    "address": "165 Rua Teste",
+    "city": "Teste",
+    "state": "Estado teste",
+    "doctor_name": "Doutor Teste",
+    "doctor_email": "doutor@email.com",
+    "crm": "ABC123456",
+    "crm_state": "Estado Teste",
+    "date": "2021-08-05",
+    "token": "EFG45678",
+    "type": "hemácias",
+    "type_limits": "45-52",
+    "type_result": "97"
+  }
+]

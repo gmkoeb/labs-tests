@@ -1,7 +1,4 @@
-require_relative '../../models/patient.rb'
-require_relative '../../models/doctor.rb'
-require_relative '../../models/test.rb'
-require_relative '../../models/application.rb'
+require 'spec_helper'
 
 RSpec.describe Application, type: :model do
   describe '#first' do

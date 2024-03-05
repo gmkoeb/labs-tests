@@ -1,4 +1,4 @@
-require_relative '../../models/test.rb'
+require 'spec_helper'
 
 RSpec.describe Test, type: :model do
   describe '#all' do
