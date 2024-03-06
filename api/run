@@ -1,0 +1,1 @@
+docker run --rm --name labs-tests --network rebase_labs -w /app -v $(pwd):/app -p 3000:3000 -d ruby bash -c "gem install rspec rackup sinatra puma pg && ruby server.rb"
