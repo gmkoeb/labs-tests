@@ -18,16 +18,17 @@ Para executar a aplicação você deve:
 
         docker network create rebase_labs
 
-4. Inicializar container do servidor:
+4. Inicializar containers:
    
-       docker run --rm --name labs-tests --network rebase_labs -w /app -v $(pwd):/app -p 3000:3000 -d ruby bash -c "gem install rspec rackup sinatra puma pg && ruby server.rb"
+        make build_containers
 
-5. Inicializar container do postgres:
+6. A API estará rodando no endereço:
 
-       docker run --rm --name postgres --network rebase_labs -v pgdata:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
-
-6. A aplicação estará rodando no endereço:
        http://localhost:3000
+
+7. A aplicação web (front-end) estará rodando no endereço:
+
+        http://localhost:3001
 
 ## Popular banco de dados   
 Para transferir os dados do arquivo csv para o postgres, você deve:
