@@ -175,7 +175,7 @@ function getPatients(patientsUrl){
   })}
 }
 
-function filterPatients() {
+function filterTable() {
   const input = document.getElementById('filterInput').value.toUpperCase();
   const rows = document.getElementsByTagName('tr');
   
