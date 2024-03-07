@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "name": "Doutor Teste",
+    "email": "doutor@email.com",
+    "crm": "ABC123456",
+    "crm_state": "Estado Teste"
+  }
+]

@@ -1,0 +1,12 @@
+[
+  {
+    "id": "1",
+    "name": "Paciente Teste",
+    "registration_number": "123456789",
+    "email": "teste@email.com",
+    "birth_date": "1997-01-01",
+    "address": "165 Rua Teste",
+    "city": "Teste",
+    "state": "Estado teste"
+  }
+]
