@@ -60,18 +60,20 @@ class Test < Application
     tests = []
     db_connection do |connection|
       begin
-        tests = connection.exec('SELECT tests.id, patients.name AS patient_name, patients.registration_number, patients.email AS patient_email,
-                                 patients.birth_date, patients.address, patients.city, patients.state,
-                                 doctors.name AS doctor_name, doctors.email AS doctor_email, doctors.crm, doctors.crm_state,
-                                 tests.date, tests.token, tests.type, tests.type_limits, tests.type_result
-                                 FROM tests
-                                 INNER JOIN patients ON tests.patient_id = patients.id
-                                 INNER JOIN doctors ON tests.doctor_id = doctors.id;').to_a
+        tests = connection.exec('
+        SELECT
+        tests.token, tests.date, patients.registration_number,
+        patients.name AS patient_name, patients.email AS patient_email,
+        patients.birth_date, doctors.crm, doctors.crm_state, doctors.name AS doctor_name,
+        tests.type, tests.type_limits, tests.type_result
+        FROM tests
+        INNER JOIN patients ON tests.patient_id = patients.id
+        INNER JOIN doctors ON tests.doctor_id = doctors.id').to_a
       rescue PG::Error => e
-        { error: "Error executing SQL query: #{e.message}" }
+        return { error: "Error executing SQL query: #{e.message}" }.to_json
       end
     end
-    tests.to_json
+    tests = format_tests_hash(tests)
   end
 
   def patient
@@ -122,5 +124,32 @@ class Test < Application
       type_limits: @type_limits,
       type_result: @type_result
     }
+  end
+
+  private
+
+  def self.format_tests_hash(tests)
+    tests.group_by { |test| test['token'] }.map do |token, tests|
+      {
+        token: token,
+        date: tests.first['date'],
+        registration_number: tests.first['registration_number'],
+        name: tests.first['patient_name'],
+        email: tests.first['patient_email'],
+        birth_date: tests.first['birth_date'],
+        doctor: {
+          crm: tests.first['crm'],
+          crm_state: tests.first['crm_state'],
+          name: tests.first['doctor_name']
+        },
+        tests: tests.map do |test|
+          {
+            type: test['type'],
+            type_limits: test['type_limits'],
+            type_result: test['type_result']
+          }
+        end
+      }
+    end.to_json
   end
 end

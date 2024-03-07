@@ -1,21 +1,22 @@
 [
   {
-    "id": "1",
-    "patient_name": "Paciente Teste",
-    "registration_number": "123456789",
-    "patient_email": "teste@email.com",
-    "birth_date": "1997-01-01",
-    "address": "165 Rua Teste",
-    "city": "Teste",
-    "state": "Estado teste",
-    "doctor_name": "Doutor Teste",
-    "doctor_email": "doutor@email.com",
-    "crm": "ABC123456",
-    "crm_state": "Estado Teste",
+    "token": "ABC123",
     "date": "2021-08-05",
-    "token": "EFG45678",
-    "type": "hemácias",
-    "type_limits": "45-52",
-    "type_result": "97"
+    "registration_number": "123456",
+    "name": "Paciente Teste",
+    "email": "paciente@email.com",
+    "birth_date": "2001-03-11",
+    "doctor": {
+      "crm": "123456",
+      "crm_state": "PI",
+      "name": "Doutor Teste"
+    },
+    "tests": [
+      {
+        "type": "hemácias",
+        "type_limits": "45-52",
+        "type_result": "97"
+      }
+    ]
   }
 ]
