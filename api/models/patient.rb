@@ -75,4 +75,17 @@ class Patient < Application
     end
     tests
   end
+
+  def as_json
+    {
+      id: @id,
+      registration_number: @registration_number,
+      name: @name,
+      email: @email,
+      birth_date: @birth_date,
+      address: @address,
+      city: @city,
+      state: @state
+    }
+  end
 end

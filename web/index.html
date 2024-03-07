@@ -10,8 +10,14 @@
   <title>Document</title>
 </head>
 <body>
-  <h1>Exames Cadastrados</h1>
-  <table>
+  <header>
+    <nav>
+      <button class="navLink active" onclick="toggleElement(event)">Exames</button>
+      <button class="navLink" onclick="toggleElement(event)">Médicos</button>
+      <button class="navLink" onclick="toggleElement(event)">Pacientes</button>
+    </nav>
+  </header>
+  <table id="exams">
     <thead>
       <tr>
         <th>Nome do Paciente</th>
@@ -32,9 +38,34 @@
         <th>Resultado</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody id="examsBody">
     </tbody>
   </table>
+  <table id="patients" style="display: none;">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>CPF</th>
+        <th>Email</th>
+        <th>Data de Nascimento</th>
+        <th>Endereço</th>
+        <th>Cidade</th>
+        <th>Estado</th>
+      </tr>
+    </thead>
+    <tbody id="patientsBody">
+    </tbody>
+  </table>
+  <table id="doctors" style="display: none;">
+    <thead>
+      <th>Nome</th>
+      <th>Email</th>
+      <th>CRM</th>
+      <th>Estado do CRM</th>
+    </thead>
+    <tbody id="doctorsBody">
+    </tbody>
+  </table>
+  <script src="main.js"></script>
 </body>
-<script src="main.js"></script>
 </html>

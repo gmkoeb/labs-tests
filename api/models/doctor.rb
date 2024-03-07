@@ -68,4 +68,14 @@ class Doctor < Application
     end
     tests
   end
+
+  def as_json
+    {
+      id: @id,
+      name: @name,
+      email: @email,
+      crm: @crm,
+      crm_state: @crm_state
+    }
+  end
 end
