@@ -106,73 +106,74 @@ function toggleElement(event) {
 
 function getDoctors(doctorsUrl){
   doctorsTable = document.getElementById('doctorsBody')
-  fetch(doctorsUrl).
-  then((response) => response.json()).
-  then((data) => {
-    data.forEach(function(doctor) {
-      const tr = document.createElement('tr')
-      const doctorName = document.createElement('td')
-      const doctorEmail = document.createElement('td')
-      const crm = document.createElement('td')
-      const crmState = document.createElement('td')
+  if (doctorsTable.childElementCount === 0){
+    fetch(doctorsUrl).
+    then((response) => response.json()).
+    then((data) => {
+      data.forEach(function(doctor) {
+        const tr = document.createElement('tr')
+        const doctorName = document.createElement('td')
+        const doctorEmail = document.createElement('td')
+        const crm = document.createElement('td')
+        const crmState = document.createElement('td')
 
-      doctorName.textContent = `${doctor.name}`
-      doctorEmail.textContent = `${doctor.email}`
-      crm.textContent = `${doctor.crm}`
-      crmState.textContent = `${doctor.crm_state}`
+        doctorName.textContent = `${doctor.name}`
+        doctorEmail.textContent = `${doctor.email}`
+        crm.textContent = `${doctor.crm}`
+        crmState.textContent = `${doctor.crm_state}`
 
-      tr.appendChild(doctorName)
-      tr.appendChild(doctorEmail)
-      tr.appendChild(crm)
-      tr.appendChild(crmState)
-      if (doctorsTable.childElementCount < data.length) {
+        tr.appendChild(doctorName)
+        tr.appendChild(doctorEmail)
+        tr.appendChild(crm)
+        tr.appendChild(crmState)
         doctorsTable.appendChild(tr)
-      }
+      })
+    }).
+    catch(function(error) {
+      console.log(error)
     })
-  }).
-  catch(function(error) {
-    console.log(error)
-})}
+  }
+}
 
 function getPatients(patientsUrl){
   patientsTable = document.getElementById('patientsBody')
-  fetch(patientsUrl).
-  then((response) => response.json()).
-  then((data) => {
-    data.forEach(function(patient) {
-      const tr = document.createElement('tr')
-      const patientName = document.createElement('td')
-      const registrationNumber = document.createElement('td')
-      const patientEmail = document.createElement('td')
-      const birthDate = document.createElement('td')
-      const address = document.createElement('td')
-      const city = document.createElement('td')
-      const state = document.createElement('td')
+  if (patientsTable.childElementCount === 0){
+    fetch(patientsUrl).
+    then((response) => response.json()).
+    then((data) => {
+      data.forEach(function(patient) {
+        const tr = document.createElement('tr')
+        const patientName = document.createElement('td')
+        const registrationNumber = document.createElement('td')
+        const patientEmail = document.createElement('td')
+        const birthDate = document.createElement('td')
+        const address = document.createElement('td')
+        const city = document.createElement('td')
+        const state = document.createElement('td')
 
-      patientName.textContent = `${patient.name}`
-      registrationNumber.textContent = `${patient.registration_number}`
-      patientEmail.textContent = `${patient.email}`
-      birthDate.textContent = `${patient.birth_date}`
-      address.textContent = `${patient.address}`
-      city.textContent = `${patient.city}`
-      state.textContent = `${patient.state}`
+        patientName.textContent = `${patient.name}`
+        registrationNumber.textContent = `${patient.registration_number}`
+        patientEmail.textContent = `${patient.email}`
+        birthDate.textContent = `${patient.birth_date}`
+        address.textContent = `${patient.address}`
+        city.textContent = `${patient.city}`
+        state.textContent = `${patient.state}`
 
-      tr.appendChild(patientName)
-      tr.appendChild(registrationNumber)
-      tr.appendChild(patientEmail)
-      tr.appendChild(birthDate)
-      tr.appendChild(address)
-      tr.appendChild(city)
-      tr.appendChild(state)
-
-      if (patientsTable.childElementCount < data.length) {
+        tr.appendChild(patientName)
+        tr.appendChild(registrationNumber)
+        tr.appendChild(patientEmail)
+        tr.appendChild(birthDate)
+        tr.appendChild(address)
+        tr.appendChild(city)
+        tr.appendChild(state)
         patientsTable.appendChild(tr)
-      }
+
     })
   }).
   catch(function(error) {
     console.log(error)
-})}
+  })}
+}
 
 function filterPatients() {
   const input = document.getElementById('filterInput').value.toUpperCase();

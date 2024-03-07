@@ -12,6 +12,9 @@ RSpec.describe "Home page", type: :system do
 
       visit '/'
 
+      expect(page).to have_button 'Exames'
+      expect(page).to have_button 'Médicos'
+      expect(page).to have_button 'Pacientes'
       expect(page).to have_content 'Nome do Paciente'
       expect(page).to have_content 'CPF'
       expect(page).to have_content 'Email do Paciente'
@@ -140,6 +143,7 @@ RSpec.describe "Home page", type: :system do
 
       expect(page).to have_content 'Doutor de Teste'
       expect(page).to have_content 'DEF456'
+      expect(page).to have_content 'TOKEN49JB13'
       expect(page).to_not have_content 'Doutor 1'
       expect(page).to_not have_content 'ABC123'
     end
