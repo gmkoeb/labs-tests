@@ -173,3 +173,32 @@ function getPatients(patientsUrl){
   catch(function(error) {
     console.log(error)
 })}
+
+function filterPatients() {
+  const input = document.getElementById('filterInput').value.toUpperCase();
+  const rows = document.getElementsByTagName('tr');
+  
+  for (let i = 0; i < rows.length; i++) {
+    const name = rows[i].getElementsByTagName('td')[0];
+    const doctorName = rows[i].getElementsByTagName('td')[7];
+
+    if (name && doctorName) {
+      const patientTextValue = name.textContent || name.innerText;
+      const doctorTextValue = doctorName.textContent || doctorName.innerText;
+      
+      if (patientTextValue.toUpperCase().indexOf(input) > -1 || doctorTextValue.toUpperCase().indexOf(input) > -1) {
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+    } else if (name){
+      const textValue = name.textContent || name.innerText;
+      
+      if (textValue.toUpperCase().indexOf(input) > -1) {
+        rows[i].style.display = '';
+      } else {
+        rows[i].style.display = 'none';
+      }
+    }
+  }
+}

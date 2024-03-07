@@ -17,6 +17,10 @@
       <button class="navLink" onclick="toggleElement(event)">Pacientes</button>
     </nav>
   </header>
+  <div class="searchInput">
+    <label for="filterInput" style="display: none;">Pesquisar</label>
+    <input type="text" placeholder="pesquisar paciente ou médico" id="filterInput" oninput=" filterPatients()">
+  </div>
   <table id="exams">
     <thead>
       <tr>
