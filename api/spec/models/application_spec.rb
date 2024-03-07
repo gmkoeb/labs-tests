@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Application, type: :model do
   describe '#first' do
     context 'tests' do

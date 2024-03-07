@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 describe 'Tests API' do
   context 'GET /tests' do
     it 'success' do

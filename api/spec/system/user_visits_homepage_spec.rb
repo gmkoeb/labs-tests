@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe "Home page", type: :system do
   describe 'Usuário visita página inicial' do
     it 'e vê tabela de exames' do

@@ -1,5 +1,3 @@
-require 'spec_helper'
-
 RSpec.describe Doctor, type: :model do
   describe '#all' do
     it 'retorna todos os médicos' do

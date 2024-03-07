@@ -8,12 +8,13 @@ def convert_data
   columns = rows.shift
 
   create_tables
-
-  pp 'Data conversion started'
-  rows.map do |row|
-    populate_tables(row)
+  db_connection do |connection|
+    pp 'Data conversion started'
+    rows.map do |row|
+      populate_tables(row, connection)
+    end
+    pp 'Data conversion ended'
   end
-  pp 'Data conversion ended'
 end
 
 def db_connection
@@ -72,73 +73,67 @@ def create_tables
   end
 end
 
-def populate_tables(row)
-  db_connection do |connection|
-    patient_id = find_or_create_patient(row)
-    doctor_id = find_or_create_doctor(row)
-    connection.exec(
-      'INSERT INTO tests (
-        patient_id,
-        doctor_id,
-        token,
-        date,
-        type,
-        type_limits,
-        type_result
-      )
-      VALUES ($1, $2, $3, $4, $5, $6, $7)',
-      [patient_id, doctor_id, row[11], row[12], row[13], row[14], row[15]]
+def populate_tables(row, connection)
+  patient_id = find_or_create_patient(row, connection)
+  doctor_id = find_or_create_doctor(row, connection)
+  connection.exec(
+    'INSERT INTO tests (
+      patient_id,
+      doctor_id,
+      token,
+      date,
+      type,
+      type_limits,
+      type_result
     )
-  end
+    VALUES ($1, $2, $3, $4, $5, $6, $7)',
+    [patient_id, doctor_id, row[11], row[12], row[13], row[14], row[15]]
+  )
 end
 
-def find_or_create_patient(row)
-  db_connection do |connection|
+def find_or_create_patient(row, connection)
+  patient_id_query = connection.exec(
+    'SELECT id FROM patients
+      WHERE registration_number = $1',
+      [row[0]]
+  )
+  if patient_id_query.to_a.empty?
     patient_id_query = connection.exec(
-      'SELECT id FROM patients
-       WHERE registration_number = $1',
-       [row[0]]
-    )
-    if patient_id_query.to_a.empty?
-      patient_id_query = connection.exec(
-        'INSERT INTO patients (
-          registration_number,
-          name,
-          email,
-          birth_date,
-          address,
-          city,
-          state
-        )
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        RETURNING id',
-        [row[0], row[1], row[2], row[3], row[4], row[5], row[6]])
-    end
-    patient_id_query.first['id']
+      'INSERT INTO patients (
+        registration_number,
+        name,
+        email,
+        birth_date,
+        address,
+        city,
+        state
+      )
+      VALUES ($1, $2, $3, $4, $5, $6, $7)
+      RETURNING id',
+      [row[0], row[1], row[2], row[3], row[4], row[5], row[6]])
   end
+  patient_id_query.first['id']
 end
 
-def find_or_create_doctor(row)
-  db_connection do |connection|
+def find_or_create_doctor(row, connection)
+  doctor_id_query = connection.exec(
+    'SELECT id FROM doctors
+      WHERE crm = $1',
+      [row[7]]
+    )
+  if doctor_id_query.to_a.empty?
     doctor_id_query = connection.exec(
-      'SELECT id FROM doctors
-       WHERE crm = $1',
-       [row[7]]
-      )
-    if doctor_id_query.to_a.empty?
-      doctor_id_query = connection.exec(
-        'INSERT INTO doctors(
-          crm,
-          crm_state,
-          name,
-          email
-          )
-         VALUES ($1, $2, $3, $4)
-         RETURNING id',
-         [row[7], row[8], row[9], row[10]])
-    end
-    doctor_id_query.first['id']
+      'INSERT INTO doctors(
+        crm,
+        crm_state,
+        name,
+        email
+        )
+        VALUES ($1, $2, $3, $4)
+        RETURNING id',
+        [row[7], row[8], row[9], row[10]])
   end
+  doctor_id_query.first['id']
 end
 
 if __FILE__ == $PROGRAM_NAME
