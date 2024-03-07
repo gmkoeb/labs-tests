@@ -1,0 +1,33 @@
+*{
+  font-family: "Roboto";
+}
+
+table{
+  text-align: center;
+  width: 100%;
+}
+
+h1{
+  text-align: center;
+}
+
+thead {
+  background-color: #333;
+  color: white;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th, td {
+  border: 1px solid black;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: #fff;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #eee;
+}
