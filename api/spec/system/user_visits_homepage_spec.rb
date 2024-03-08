@@ -110,7 +110,7 @@ RSpec.describe "Home page", type: :system do
 
       visit '/'
 
-      fill_in 'Pesquisar', with: 'Paciente de'
+      fill_in 'Pesquisa por Nome', with: 'Paciente de'
 
       expect(page).to have_content 'Paciente de Teste'
       expect(page).to have_content 'TOKEN123'
@@ -131,13 +131,54 @@ RSpec.describe "Home page", type: :system do
 
       visit '/'
 
-      fill_in 'Pesquisar', with: 'Doutor de'
+      fill_in 'Pesquisa por Nome', with: 'Doutor de'
 
       expect(page).to have_content 'Doutor de Teste'
       expect(page).to have_content 'DEF456'
       expect(page).to have_content 'TOKEN49JB13'
       expect(page).to_not have_content 'Doutor 1'
       expect(page).to_not have_content 'ABC123'
+    end
+
+    it 'e realiza busca de exame por token' do
+      Patient.create(name: 'Paciente de Teste', email: 'email@email.com', registration_number: '123.456',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor 1', email: 'doutor1@email.com', crm: 'ABC123', crm_state: 'TE')
+      Doctor.create(name: 'Doutor de Teste', email: 'doutor@email.com', crm: 'DEF456', crm_state: 'TE')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'TOKEN123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+      Test.create(patient_id: 1, doctor_id: 2, token: 'TOKEN49JB13', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      visit '/'
+
+      fill_in 'Pesquisa por Código', with: 'TOKEN123'
+      click_on 'Pesquisar'
+
+      expect(page).to have_content 'TOKEN123'
+      expect(page).to have_content 'ABC123'
+      expect(page).to have_content 'Doutor 1'
+      expect(page).to_not have_content 'TOKEN49JB13'
+      expect(page).to_not have_content 'Doutor de Teste'
+      expect(page).to_not have_content 'DEF456'
+    end
+
+    it 'e realiza busca de exame por token inexistente' do
+      Patient.create(name: 'Paciente de Teste', email: 'email@email.com', registration_number: '123.456',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor 1', email: 'doutor1@email.com', crm: 'ABC123', crm_state: 'TE')
+      Doctor.create(name: 'Doutor de Teste', email: 'doutor@email.com', crm: 'DEF456', crm_state: 'TE')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'TOKEN123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      visit '/'
+
+      fill_in 'Pesquisa por Código', with: 'TOKENQUENAOEXISTE'
+      click_on 'Pesquisar'
+
+      expect(page).to have_content 'Nenhum exame com código TOKENQUENAOEXISTE encontrado'
     end
   end
 end

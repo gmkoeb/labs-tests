@@ -1,59 +1,69 @@
-const testsUrl = 'http://localhost:3000/tests' + environment();
+let testsUrl = 'http://localhost:3000/tests' + environment();
 const doctorsUrl = 'http://localhost:3000/doctors' + environment();
 const patientsUrl = 'http://localhost:3000/patients' + environment();
 
-fetch(testsUrl)
-  .then((response) => response.json())
-  .then((data) => {
-    data.forEach(function(test) {
-      test.tests.forEach(function(testItem) {
-        const tr = document.createElement('tr');
-        const name = document.createElement('td');
-        const registrationNumber = document.createElement('td');
-        const patientEmail = document.createElement('td');
-        const birthDate = document.createElement('td');
-        const doctorName = document.createElement('td');
-        const crm = document.createElement('td');
-        const crmState = document.createElement('td');
-        const token = document.createElement('td');
-        const date = document.createElement('td');
-        const type = document.createElement('td');
-        const typeLimits = document.createElement('td');
-        const typeResult = document.createElement('td');
+const doctors = document.getElementById('doctors');
+const patients = document.getElementById('patients');
+const exams = document.getElementById('exams');
+const buttons = document.querySelectorAll('.navLink');
+const emptyMessage = document.getElementById('emptyMessage');
 
-        name.textContent = `${test.name}`;
-        registrationNumber.textContent = `${test.registration_number}`;
-        patientEmail.textContent = `${test.email}`;
-        birthDate.textContent = `${test.birth_date}`;
-        doctorName.textContent = `${test.doctor.name}`;
-        crm.textContent = `${test.doctor.crm}`;
-        crmState.textContent = `${test.doctor.crm_state}`;
-        token.textContent = `${test.token}`;
-        date.textContent = `${test.date}`;
-        type.textContent = `${testItem.type}`;
-        typeLimits.textContent = `${testItem.type_limits}`;
-        typeResult.textContent = `${testItem.type_result}`;
+getTests();
 
-        tr.appendChild(name);
-        tr.appendChild(registrationNumber);
-        tr.appendChild(patientEmail);
-        tr.appendChild(birthDate);
-        tr.appendChild(doctorName);
-        tr.appendChild(crm);
-        tr.appendChild(crmState);
-        tr.appendChild(token);
-        tr.appendChild(date);
-        tr.appendChild(type);
-        tr.appendChild(typeLimits);
-        tr.appendChild(typeResult);
-
-        document.getElementById('examsBody').appendChild(tr);
+function getTests() {
+  fetch(testsUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      data.forEach(function(test) {
+        test.tests.forEach(function(testItem) {
+          const tr = document.createElement('tr');
+          const name = document.createElement('td');
+          const registrationNumber = document.createElement('td');
+          const patientEmail = document.createElement('td');
+          const birthDate = document.createElement('td');
+          const doctorName = document.createElement('td');
+          const crm = document.createElement('td');
+          const crmState = document.createElement('td');
+          const token = document.createElement('td');
+          const date = document.createElement('td');
+          const type = document.createElement('td');
+          const typeLimits = document.createElement('td');
+          const typeResult = document.createElement('td');
+  
+          name.textContent = `${test.name}`;
+          registrationNumber.textContent = `${test.registration_number}`;
+          patientEmail.textContent = `${test.email}`;
+          birthDate.textContent = `${test.birth_date}`;
+          doctorName.textContent = `${test.doctor.name}`;
+          crm.textContent = `${test.doctor.crm}`;
+          crmState.textContent = `${test.doctor.crm_state}`;
+          token.textContent = `${test.token}`;
+          date.textContent = `${test.date}`;
+          type.textContent = `${testItem.type}`;
+          typeLimits.textContent = `${testItem.type_limits}`;
+          typeResult.textContent = `${testItem.type_result}`;
+  
+          tr.appendChild(name);
+          tr.appendChild(registrationNumber);
+          tr.appendChild(patientEmail);
+          tr.appendChild(birthDate);
+          tr.appendChild(doctorName);
+          tr.appendChild(crm);
+          tr.appendChild(crmState);
+          tr.appendChild(token);
+          tr.appendChild(date);
+          tr.appendChild(type);
+          tr.appendChild(typeLimits);
+          tr.appendChild(typeResult);
+  
+          document.getElementById('examsBody').appendChild(tr);
+        });
       });
-    });
-  })
-  .catch(function(error) {
-    console.log(error);
+    })
+    .catch(function(error) {
+      console.log(error);
   });
+}
 
 
 function environment() {
@@ -67,10 +77,8 @@ function environment() {
 }
 
 function toggleElement(event) {
-  const doctors = document.getElementById('doctors');
-  const patients = document.getElementById('patients');
-  const exams = document.getElementById('exams');
-  const buttons = document.querySelectorAll('.navLink');
+  document.getElementById('filteredExams').style.display = 'none'
+  emptyMessage.textContent = ''
   const clickedButton = event.target;
   clickedButton.classList.toggle('active');
   buttons.forEach((btn) => {
@@ -164,6 +172,85 @@ function getPatients(patientsUrl){
   catch(function(error) {
     console.log(error);
   })}
+}
+
+function getFilteredExams(event){
+  event.preventDefault();
+  exams.style.display = 'none';
+  doctors.style.display = 'none';
+  patients.style.display = 'none';
+  document.getElementById('filteredExams').style.display = '';
+  document.getElementById('filteredExamsBody').innerHTML = '';
+  buttons.forEach((btn) => {
+    btn.classList.remove('active');
+  })
+  const examsButton = buttons[0];
+  examsButton.classList.toggle('active');
+  const token = document.getElementById('filterByToken').value;
+  if (token !== '') {
+    testsUrl = `http://localhost:3000/tests/${token}` + environment();
+  } else {
+    testsUrl = 'http://localhost:3000/tests' + environment();
+  }
+
+  fetch(testsUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.length === 0) {
+        emptyMessage.textContent = `Nenhum exame com código ${token} encontrado`
+        document.body.appendChild(emptyMessage);
+      } else {
+        emptyMessage.textContent = ''
+      }
+      data.forEach(function(test) {
+        test.tests.forEach(function(testItem) {
+          const tr = document.createElement('tr');
+          const name = document.createElement('td');
+          const registrationNumber = document.createElement('td');
+          const patientEmail = document.createElement('td');
+          const birthDate = document.createElement('td');
+          const doctorName = document.createElement('td');
+          const crm = document.createElement('td');
+          const crmState = document.createElement('td');
+          const token = document.createElement('td');
+          const date = document.createElement('td');
+          const type = document.createElement('td');
+          const typeLimits = document.createElement('td');
+          const typeResult = document.createElement('td');
+  
+          name.textContent = `${test.name}`;
+          registrationNumber.textContent = `${test.registration_number}`;
+          patientEmail.textContent = `${test.email}`;
+          birthDate.textContent = `${test.birth_date}`;
+          doctorName.textContent = `${test.doctor.name}`;
+          crm.textContent = `${test.doctor.crm}`;
+          crmState.textContent = `${test.doctor.crm_state}`;
+          token.textContent = `${test.token}`;
+          date.textContent = `${test.date}`;
+          type.textContent = `${testItem.type}`;
+          typeLimits.textContent = `${testItem.type_limits}`;
+          typeResult.textContent = `${testItem.type_result}`;
+
+          tr.appendChild(name);
+          tr.appendChild(registrationNumber);
+          tr.appendChild(patientEmail);
+          tr.appendChild(birthDate);
+          tr.appendChild(doctorName);
+          tr.appendChild(crm);
+          tr.appendChild(crmState);
+          tr.appendChild(token);
+          tr.appendChild(date);
+          tr.appendChild(type);
+          tr.appendChild(typeLimits);
+          tr.appendChild(typeResult);
+  
+          document.getElementById('filteredExamsBody').appendChild(tr);
+        });
+      });
+    })
+    .catch(function(error) {
+      console.log(error);
+  });
 }
 
 function filterTable() {

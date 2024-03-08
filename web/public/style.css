@@ -43,7 +43,7 @@ nav{
   margin-bottom: 16px;
 }
 
-button{
+.navLink{
   text-align: center;
   flex-direction: row;
   border: 0;
@@ -80,9 +80,39 @@ button:hover{
 .searchInput{
   margin-left: 16px;
   margin-bottom: 16px;
+  display: flex;
+  gap: 10px;
 }
 
 input{
   width: 290px;
   padding: 3px;
+}
+
+#filterByName{
+  display: flex;
+  flex-direction: column;
+}
+
+form{
+  display: flex;
+  flex-direction: column;
+}
+
+form > button {
+  background-color: #0d6efd;
+  border-radius: 5px;
+  padding: 3px;
+  border: 0px;
+  color: white;
+  margin-top: 2px;
+}
+
+form > button:hover{
+  opacity: 90%;
+  transition-duration: 300ms;
+}
+
+#emptyMessage{
+  text-align: center;
 }
