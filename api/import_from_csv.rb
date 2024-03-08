@@ -66,7 +66,8 @@ def create_tables
         date DATE,
         type VARCHAR(255),
         type_limits VARCHAR(255),
-        type_result VARCHAR(255)
+        type_result VARCHAR(255),
+        UNIQUE (token, type)
       );')
   rescue PG::Error => e
     puts "Error creating table: #{e.message}"

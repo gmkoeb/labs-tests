@@ -35,6 +35,12 @@ get '/patients' do
   Patient.all.as_json
 end
 
+post '/import' do
+  convert_data
+
+  {conversion_status: 'CSV conversion ended'}.to_json
+end
+
 set :bind, '0.0.0.0'
 set :port, 3000
 
