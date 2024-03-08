@@ -7,7 +7,7 @@ build_api:
 	 -v $(PWD)/api:/app \
 	 -p 3000:3000 \
 	 -d ruby \
-	 bash -c "apt-get update -y && apt-get install -y chromium-driver && gem install rspec capybara cuprite rackup sinatra puma pg && ruby server.rb"
+	 bash -c "apt-get update -y && apt-get install -y chromium-driver && gem install rspec multipart-post capybara cuprite rackup sinatra puma pg && ruby server.rb"
 build_db:
 	docker run --rm --name postgres --network rebase_labs -v pgdata:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
 build_web:

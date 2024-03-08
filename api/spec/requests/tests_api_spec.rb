@@ -1,3 +1,5 @@
+require 'net/http/post/multipart'
+
 describe 'Tests API' do
   context 'GET /tests' do
     it 'success' do
@@ -99,12 +101,16 @@ describe 'Tests API' do
 
   context 'POST /import' do
     it 'success' do
+      csv_file_path = '/app/spec/support/csv/test.csv'
       uri = URI("http://localhost:3000/import")
       request = Net::HTTP::Post.new(uri)
       http = Net::HTTP.new(uri.host, uri.port)
+      request = Net::HTTP::Post::Multipart.new(uri,
+      {
+        'file' => UploadIO.new(File.open(csv_file_path), 'text/csv', File.basename(csv_file_path))
+      })
       response = http.request(request)
       json_response = JSON.parse(response.body)
-
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
       expect(json_response['conversion_status']).to eq 'CSV conversion ended'

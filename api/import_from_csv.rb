@@ -2,6 +2,19 @@ require 'csv'
 require 'pg'
 require_relative 'import_from_csv.rb'
 
+def convert_uploaded_data(rows)
+  columns = rows.shift
+
+  create_tables
+  db_connection do |connection|
+    pp 'Data conversion started'
+    rows.map do |row|
+      populate_tables(row, connection)
+    end
+    pp 'Data conversion ended'
+  end
+end
+
 def convert_data
   rows = CSV.read("./data/data.csv", col_sep: ';')
 

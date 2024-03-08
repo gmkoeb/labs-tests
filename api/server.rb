@@ -36,9 +36,18 @@ get '/patients' do
 end
 
 post '/import' do
-  convert_data
-
-  {conversion_status: 'CSV conversion ended'}.to_json
+  if params[:file]
+    file_name = params[:file][:filename]
+    file_extension = File.extname(file_name)
+    if file_extension == '.csv'
+      file = params[:file][:tempfile]
+      rows = CSV.read(file, col_sep: ';')
+      convert_uploaded_data(rows)
+      {conversion_status: 'CSV conversion ended'}.to_json
+    else
+      {conversion_error: 'File extension not supported'}.to_json
+    end
+  end
 end
 
 set :bind, '0.0.0.0'
