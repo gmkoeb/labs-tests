@@ -56,6 +56,31 @@ class Test < Application
     test
   end
 
+  def self.where(attributes)
+    tests = []
+    db_connection do |connection|
+      begin
+        data = connection.exec(
+         'SELECT *
+          FROM tests
+          WHERE id = $1 OR patient_id = $2 OR doctor_id = $3
+          OR token = $4 OR date = $5 OR type = $6 OR type_limits = $7
+          OR type_result = $8',
+          [attributes[:id], attributes[:patient_id], attributes[:doctor_id], attributes[:token],
+           attributes[:date], attributes[:type], attributes[:type_limits], attributes[:type_result]]).to_a
+        data.each do |test|
+          tests << Test.new(id: test['id'], patient_id: test['patient_id'], doctor_id: test['doctor_id'],
+                            token: test['token'], type: test['type'], type_limits: test['type_limits'],
+                            type_result: test['type_result'], date: test['date'])
+        end
+      rescue PG::Error => e
+        { error: "Error executing SQL query: #{e.message}" }
+      end
+    end
+
+    tests
+  end
+
   def self.all_with_foreign
     tests = []
     db_connection do |connection|

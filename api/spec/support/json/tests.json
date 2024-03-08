@@ -18,5 +18,25 @@
         "type_result": "97"
       }
     ]
+  },
+  {
+    "token": "DFG456",
+    "date": "2021-08-05",
+    "registration_number": "123456",
+    "name": "Paciente Teste",
+    "email": "paciente@email.com",
+    "birth_date": "2001-03-11",
+    "doctor": {
+      "crm": "123456",
+      "crm_state": "PI",
+      "name": "Doutor Teste"
+    },
+    "tests": [
+      {
+        "type": "hemácias",
+        "type_limits": "45-52",
+        "type_result": "97"
+      }
+    ]
   }
 ]

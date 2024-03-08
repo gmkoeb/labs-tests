@@ -9,11 +9,10 @@ describe 'Tests API' do
 
       uri = URI("http://localhost:3000/tests")
       response = Net::HTTP.get_response(uri)
+      json_response = JSON.parse(response.body)
 
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      json_response = JSON.parse(response.body)
-
       expect(json_response[0]["token"]).to include('ABC123')
       expect(json_response[0]["registration_number"]).to include('123456')
       expect(json_response[0]["name"]).to include('Paciente Teste')
@@ -39,11 +38,10 @@ describe 'Tests API' do
 
       uri = URI("http://localhost:3000/patients")
       response = Net::HTTP.get_response(uri)
+      json_response = JSON.parse(response.body)
 
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      json_response = JSON.parse(response.body)
-
       expect(json_response[0]["registration_number"]).to include('123456789')
       expect(json_response[0]["name"]).to include('Paciente Teste')
       expect(json_response[0]["email"]).to include('teste@email.com')
@@ -64,15 +62,38 @@ describe 'Tests API' do
 
       uri = URI("http://localhost:3000/doctors")
       response = Net::HTTP.get_response(uri)
+      json_response = JSON.parse(response.body)
 
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      json_response = JSON.parse(response.body)
-
       expect(json_response[0]["crm"]).to include('ABC123456')
       expect(json_response[0]["crm_state"]).to include('Estado Teste')
       expect(json_response[0]["name"]).to include('Doutor Teste')
       expect(json_response[0]["email"]).to include('doutor@email.com')
+    end
+  end
+
+  context 'GET /tests/:token' do
+    it 'success' do
+      uri = URI("http://localhost:3000/tests/IQCZ17")
+      response = Net::HTTP.get_response(uri)
+      json_response = JSON.parse(response.body)
+
+      expect(response.code).to eq '200'
+      expect(response.content_type).to include 'application/json'
+      expect(json_response.length).to eq 1
+      expect(json_response[0]["token"]).to include('IQCZ17')
+      expect(json_response[0]["registration_number"]).to include('048.973.170-88')
+      expect(json_response[0]["name"]).to include('Emilly Batista Neto')
+      expect(json_response[0]["email"]).to include('gerald.crona@ebert-quigley.com')
+      expect(json_response[0]["birth_date"]).to include('2001-03-11')
+      expect(json_response[0]["doctor"]["crm"]).to include('B000BJ20J4')
+      expect(json_response[0]["doctor"]["crm_state"]).to include('PI')
+      expect(json_response[0]["doctor"]["name"]).to include('Maria Luiza Pires')
+      expect(json_response[0]["date"]).to include('2021-08-05')
+      expect(json_response[0]["tests"][0]["type"]).to include('hemácias')
+      expect(json_response[0]["tests"][0]["type_limits"]).to include('45-52')
+      expect(json_response[0]["tests"][0]["type_result"]).to include('97')
     end
   end
 end

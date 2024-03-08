@@ -127,4 +127,119 @@ RSpec.describe Test, type: :model do
       expect(tests.first['tests'][1]['type_result']).to eq '65'
     end
   end
+
+  describe '#where' do
+    it 'busca exame por token' do
+      Patient.create(name: 'Paciente', email: 'email@email.com', registration_number: '123',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com', crm: 'ABC123', crm_state: 'teste')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'def456', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '50-90', type_result: '65')
+
+      tests = Test.where(token: 'abc123')
+
+      expect(tests).to be_a(Array)
+      expect(tests.length).to eq 1
+      expect(tests.first.token).to eq 'abc123'
+      expect(tests.first.token).to_not eq 'def456'
+    end
+
+    it 'busca exame por tipo' do
+      Patient.create(name: 'Paciente', email: 'email@email.com', registration_number: '123',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com', crm: 'ABC123', crm_state: 'teste')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'def456', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '50-90', type_result: '65')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'ghi789', date: '2022-01-03', type: 'leucócitos',
+                  type_limits: '50-90', type_result: '65')
+
+      tests = Test.where(type: 'hemácias')
+
+      expect(tests).to be_a(Array)
+      expect(tests.length).to eq 2
+      expect(tests.first.token).to eq 'abc123'
+      expect(tests[1].token).to eq 'def456'
+    end
+
+    it 'busca exame por paciente' do
+      Patient.create(name: 'Paciente', email: 'email@email.com', registration_number: '123',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com', crm: 'ABC123', crm_state: 'teste')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      tests = Test.where(patient_id: '1')
+
+      expect(tests).to be_a(Array)
+      expect(tests.length).to eq 1
+      expect(tests[0].token).to eq 'abc123'
+    end
+
+    it 'busca exame por médico' do
+      Patient.create(name: 'Paciente', email: 'email@email.com', registration_number: '123',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com', crm: 'ABC123', crm_state: 'teste')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      tests = Test.where(doctor_id: '1')
+
+      expect(tests).to be_a(Array)
+      expect(tests.length).to eq 1
+      expect(tests[0].token).to eq 'abc123'
+    end
+
+    it 'busca exame por data' do
+      Patient.create(name: 'Paciente', email: 'email@email.com', registration_number: '123',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com', crm: 'ABC123', crm_state: 'teste')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      tests = Test.where(date: '2022-01-03')
+
+      expect(tests).to be_a(Array)
+      expect(tests.length).to eq 1
+      expect(tests[0].token).to eq 'abc123'
+    end
+
+    it 'busca exame por limites' do
+      Patient.create(name: 'Paciente', email: 'email@email.com', registration_number: '123',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com', crm: 'ABC123', crm_state: 'teste')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      tests = Test.where(type_limits: '97-102')
+
+      expect(tests).to be_a(Array)
+      expect(tests.length).to eq 1
+      expect(tests[0].token).to eq 'abc123'
+    end
+
+    it 'busca exame por limites' do
+      Patient.create(name: 'Paciente', email: 'email@email.com', registration_number: '123',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com', crm: 'ABC123', crm_state: 'teste')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      tests = Test.where(type_result: '412')
+
+      expect(tests).to be_a(Array)
+      expect(tests.length).to eq 1
+      expect(tests[0].token).to eq 'abc123'
+    end
+  end
 end
