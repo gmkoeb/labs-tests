@@ -45,7 +45,7 @@ post '/import' do
       convert_uploaded_data(rows)
       {conversion_status: 'CSV conversion ended'}.to_json
     else
-      {conversion_error: 'File extension not supported'}.to_json
+      {conversion_status: 'File extension not supported'}.to_json
     end
   end
 end

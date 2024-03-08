@@ -115,5 +115,21 @@ describe 'Tests API' do
       expect(response.content_type).to include 'application/json'
       expect(json_response['conversion_status']).to eq 'CSV conversion ended'
     end
+
+    it 'falha caso extensão de arquivo não seja csv' do
+      pdf_file_path = '/app/spec/support/pdf/dummy.pdf'
+      uri = URI("http://localhost:3000/import")
+      request = Net::HTTP::Post.new(uri)
+      http = Net::HTTP.new(uri.host, uri.port)
+      request = Net::HTTP::Post::Multipart.new(uri,
+      {
+        'file' => UploadIO.new(File.open(pdf_file_path), 'application/pdf', File.basename(pdf_file_path))
+      })
+      response = http.request(request)
+      json_response = JSON.parse(response.body)
+      expect(response.code).to eq '200'
+      expect(response.content_type).to include 'application/json'
+      expect(json_response['conversion_status']).to eq 'File extension not supported'
+    end
   end
 end
