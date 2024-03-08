@@ -109,7 +109,7 @@ form > button {
 }
 
 form > button:hover{
-  opacity: 90%;
+  opacity: 85%;
   transition-duration: 300ms;
 }
 
