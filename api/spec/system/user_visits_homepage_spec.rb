@@ -189,7 +189,7 @@ RSpec.describe "Home page", type: :system do
 
       click_button('Enviar')
 
-      expect(page).to have_content('Conversão de dados iniciada. Atualize a página para ver os dados na tabela')
+      expect(page).to have_content('Conversão de dados iniciada')
     end
 
     it 'e realiza upload de arquivo não suportado' do

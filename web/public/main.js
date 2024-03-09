@@ -67,7 +67,6 @@ function getTests() {
   });
 }
 
-
 function environment() {
   const isUserAgentHeadless = navigator.userAgent.includes('HeadlessChrome');
   if (isUserAgentHeadless === true) {
@@ -274,12 +273,14 @@ function sendFile(event) {
     const parsedData = JSON.parse(data);
     const conversionStatus = parsedData.conversion_status
     uploadStatus.textContent = conversionStatus;
-  })
+  }).then(setTimeout(() => {
+    getTests();
+    uploadStatus.textContent = 'Conversão de dados concluída. Atualize a página caso não esteja vendo os dados na tabela'
+  }, 3000))
   .catch(error => {
     console.error('Error during file upload:', error);
   });
 }
-
 
 function filterTable() {
   const input = document.getElementById('filterInput').value.toUpperCase();

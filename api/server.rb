@@ -42,7 +42,7 @@ post '/import' do
       file = params[:file][:tempfile]
       rows = CSV.read(file, col_sep: ';')
       DataConversionJob.perform_async(rows, params[:env])
-      {conversion_status: 'Conversão de dados iniciada. Atualize a página para ver os dados na tabela'}.to_json
+      {conversion_status: 'Conversão de dados iniciada'}.to_json
     else
       {conversion_status: 'Extensão não suportada'}.to_json
     end

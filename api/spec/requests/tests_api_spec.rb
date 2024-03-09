@@ -123,7 +123,7 @@ describe 'Tests API' do
       json_response = JSON.parse(response.body)
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      expect(json_response['conversion_status']).to eq 'Conversão de dados iniciada. Atualize a página para ver os dados na tabela'
+      expect(json_response['conversion_status']).to eq 'Conversão de dados iniciada'
       sleep 0.5
       expect(Patient.last.name).to eq 'Paciente Teste Neto'
       expect(Patient.last.registration_number).to eq '123456'
