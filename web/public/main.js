@@ -259,9 +259,12 @@ function filterTable() {
   
   for (let i = 0; i < rows.length; i++) {
     const name = rows[i].getElementsByTagName('td')[0];
-    const doctorName = rows[i].getElementsByTagName('td')[4];
+    let doctorName = ''
+    if (document.getElementsByClassName('navLink')[0].classList.contains('active')) {
+      doctorName = rows[i].getElementsByTagName('td')[4];
+    }
 
-    if (name && doctorName) {
+    if (name && doctorName !== '') {
       const patientTextValue = name.textContent || name.innerText;
       const doctorTextValue = doctorName.textContent || doctorName.innerText;
       

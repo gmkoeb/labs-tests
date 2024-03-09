@@ -86,6 +86,7 @@ describe 'Tests API' do
                   type_limits: '97-102', type_result: '412')
       Test.create(patient_id: 1, doctor_id: 1, token: 'Token456', date: '2022-01-03', type: 'hemácias',
                   type_limits: '97-102', type_result: '412')
+
       uri = URI("http://localhost:3000/tests/TOKEN123?env=test")
       response = Net::HTTP.get_response(uri)
       json_response = JSON.parse(response.body)
@@ -119,11 +120,29 @@ describe 'Tests API' do
       {
         'file' => UploadIO.new(File.open(csv_file_path), 'text/csv', File.basename(csv_file_path))
       })
+
       response = http.request(request)
       json_response = JSON.parse(response.body)
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      expect(json_response['conversion_status']).to eq 'CSV conversion ended'
+      expect(json_response['conversion_status']).to eq 'CSV conversion started'
+      sleep 0.5
+      expect(Patient.last.name).to eq 'Paciente Teste Neto'
+      expect(Patient.last.registration_number).to eq '123456'
+      expect(Patient.last.email).to eq 'teste@ebert-quigley.com'
+      expect(Patient.last.birth_date).to eq '2001-03-11'
+      expect(Patient.last.address).to eq '165 Teste'
+      expect(Patient.last.city).to eq 'Ituverava'
+      expect(Patient.last.state).to eq 'Alagoas'
+      expect(Doctor.last.crm).to eq 'B000BJ20J4'
+      expect(Doctor.last.crm_state).to eq 'PI'
+      expect(Doctor.last.name).to eq 'Doutora Teste'
+      expect(Doctor.last.email).to eq 'teste@wisozk.biz'
+      expect(Test.last.token).to eq 'XMC123'
+      expect(Test.last.date).to eq '2021-08-05'
+      expect(Test.last.type).to eq 'hemácias'
+      expect(Test.last.type_limits).to eq '45-52'
+      expect(Test.last.type_result).to eq '97'
     end
 
     it 'falha caso extensão de arquivo não seja csv' do
@@ -135,6 +154,7 @@ describe 'Tests API' do
       {
         'file' => UploadIO.new(File.open(pdf_file_path), 'application/pdf', File.basename(pdf_file_path))
       })
+
       response = http.request(request)
       json_response = JSON.parse(response.body)
       expect(response.code).to eq '200'

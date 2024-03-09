@@ -4,7 +4,7 @@ require_relative 'import_from_csv.rb'
 require_relative './models/test.rb'
 require_relative './models/doctor.rb'
 require_relative './models/patient.rb'
-
+require_relative './jobs/data_conversion_job'
 set :protection, :except => :json_csrf
 
 before do
@@ -22,8 +22,7 @@ get '/tests' do
 end
 
 get '/tests/:token' do
-  token = params[:token]
-  tests = Test.where(token:)
+  tests = Test.where(token: params[:token])
   format_tests_response(tests)
 end
 
@@ -42,8 +41,8 @@ post '/import' do
     if file_extension == '.csv'
       file = params[:file][:tempfile]
       rows = CSV.read(file, col_sep: ';')
-      convert_uploaded_data(rows)
-      {conversion_status: 'CSV conversion ended'}.to_json
+      DataConversionJob.perform_async(rows, params[:env])
+      {conversion_status: 'CSV conversion started'}.to_json
     else
       {conversion_status: 'File extension not supported'}.to_json
     end
