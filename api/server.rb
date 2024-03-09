@@ -76,5 +76,5 @@ def format_tests_response(tests)
         }
       end
     }
-  end.to_json
+  end.first.to_json
 end

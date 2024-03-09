@@ -93,20 +93,18 @@ describe 'Tests API' do
 
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      expect(json_response.length).to eq 1
-      expect(json_response[0]["token"]).to include('TOKEN123')
-      expect(json_response[0]["registration_number"]).to include('123.456')
-      expect(json_response[0]["name"]).to include('Paciente de Teste')
-      expect(json_response[0]["email"]).to include('email@email.com')
-      expect(json_response[0]["birth_date"]).to include('2022-02-03')
-      expect(json_response[0]["doctor"]["crm"]).to include('ABC123')
-      expect(json_response[0]["doctor"]["crm_state"]).to include('TE')
-      expect(json_response[0]["doctor"]["name"]).to include('Doutor 1')
-      expect(json_response[0]["date"]).to include('2022-01-03')
-      expect(json_response[0]["tests"][0]["type"]).to include('hemácias')
-      expect(json_response[0]["tests"][0]["type_limits"]).to include('97-102')
-      expect(json_response[0]["tests"][0]["type_result"]).to include('412')
-      expect(json_response[1]).to eq nil
+      expect(json_response["token"]).to include('TOKEN123')
+      expect(json_response["registration_number"]).to include('123.456')
+      expect(json_response["name"]).to include('Paciente de Teste')
+      expect(json_response["email"]).to include('email@email.com')
+      expect(json_response["birth_date"]).to include('2022-02-03')
+      expect(json_response["doctor"]["crm"]).to include('ABC123')
+      expect(json_response["doctor"]["crm_state"]).to include('TE')
+      expect(json_response["doctor"]["name"]).to include('Doutor 1')
+      expect(json_response["date"]).to include('2022-01-03')
+      expect(json_response["tests"][0]["type"]).to include('hemácias')
+      expect(json_response["tests"][0]["type_limits"]).to include('97-102')
+      expect(json_response["tests"][0]["type_result"]).to include('412')
     end
   end
 

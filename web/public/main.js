@@ -199,56 +199,54 @@ function getFilteredExams(event){
   fetch(testsUrl)
     .then((response) => response.json())
     .then((data) => {
-      if (data.length === 0) {
+      if (data === null) {
         emptyMessage.textContent = `Nenhum exame com código ${token} encontrado`
         document.body.appendChild(emptyMessage);
       } else {
         emptyMessage.textContent = ''
       }
-      data.forEach(function(test) {
-        test.tests.forEach(function(testItem) {
-          const tr = document.createElement('tr');
-          const name = document.createElement('td');
-          const registrationNumber = document.createElement('td');
-          const patientEmail = document.createElement('td');
-          const birthDate = document.createElement('td');
-          const doctorName = document.createElement('td');
-          const crm = document.createElement('td');
-          const crmState = document.createElement('td');
-          const token = document.createElement('td');
-          const date = document.createElement('td');
-          const type = document.createElement('td');
-          const typeLimits = document.createElement('td');
-          const typeResult = document.createElement('td');
-  
-          name.textContent = `${test.name}`;
-          registrationNumber.textContent = `${test.registration_number}`;
-          patientEmail.textContent = `${test.email}`;
-          birthDate.textContent = `${test.birth_date}`;
-          doctorName.textContent = `${test.doctor.name}`;
-          crm.textContent = `${test.doctor.crm}`;
-          crmState.textContent = `${test.doctor.crm_state}`;
-          token.textContent = `${test.token}`;
-          date.textContent = `${test.date}`;
-          type.textContent = `${testItem.type}`;
-          typeLimits.textContent = `${testItem.type_limits}`;
-          typeResult.textContent = `${testItem.type_result}`;
+      data.tests.forEach(function(testItem) {
+        const tr = document.createElement('tr');
+        const name = document.createElement('td');
+        const registrationNumber = document.createElement('td');
+        const patientEmail = document.createElement('td');
+        const birthDate = document.createElement('td');
+        const doctorName = document.createElement('td');
+        const crm = document.createElement('td');
+        const crmState = document.createElement('td');
+        const token = document.createElement('td');
+        const date = document.createElement('td');
+        const type = document.createElement('td');
+        const typeLimits = document.createElement('td');
+        const typeResult = document.createElement('td');
 
-          tr.appendChild(name);
-          tr.appendChild(registrationNumber);
-          tr.appendChild(patientEmail);
-          tr.appendChild(birthDate);
-          tr.appendChild(doctorName);
-          tr.appendChild(crm);
-          tr.appendChild(crmState);
-          tr.appendChild(token);
-          tr.appendChild(date);
-          tr.appendChild(type);
-          tr.appendChild(typeLimits);
-          tr.appendChild(typeResult);
-  
-          document.getElementById('filteredExamsBody').appendChild(tr);
-        });
+        name.textContent = `${data.name}`;
+        registrationNumber.textContent = `${data.registration_number}`;
+        patientEmail.textContent = `${data.email}`;
+        birthDate.textContent = `${data.birth_date}`;
+        doctorName.textContent = `${data.doctor.name}`;
+        crm.textContent = `${data.doctor.crm}`;
+        crmState.textContent = `${data.doctor.crm_state}`;
+        token.textContent = `${data.token}`;
+        date.textContent = `${data.date}`;
+        type.textContent = `${testItem.type}`;
+        typeLimits.textContent = `${testItem.type_limits}`;
+        typeResult.textContent = `${testItem.type_result}`;
+
+        tr.appendChild(name);
+        tr.appendChild(registrationNumber);
+        tr.appendChild(patientEmail);
+        tr.appendChild(birthDate);
+        tr.appendChild(doctorName);
+        tr.appendChild(crm);
+        tr.appendChild(crmState);
+        tr.appendChild(token);
+        tr.appendChild(date);
+        tr.appendChild(type);
+        tr.appendChild(typeLimits);
+        tr.appendChild(typeResult);
+
+        document.getElementById('filteredExamsBody').appendChild(tr);
       });
     })
     .catch(function(error) {
