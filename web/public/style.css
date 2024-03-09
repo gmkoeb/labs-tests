@@ -130,3 +130,12 @@ form > button:hover{
 #fileSubmit{
   width: 50%;
 }
+
+#file{
+  margin-left: -3px;
+}
+
+label > span {
+  font-size: 12px;
+  color: red;
+}
