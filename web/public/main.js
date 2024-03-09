@@ -193,7 +193,7 @@ function getFilteredExams(event){
   if (token !== '') {
     testsUrl = `http://localhost:3000/tests/${token}` + environment();
   } else {
-    testsUrl = 'http://localhost:3000/tests' + environment();
+    location.reload();
   }
 
   fetch(testsUrl)
