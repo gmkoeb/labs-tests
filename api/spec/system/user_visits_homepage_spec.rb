@@ -180,5 +180,27 @@ RSpec.describe "Home page", type: :system do
 
       expect(page).to have_content 'Nenhum exame com código TOKENQUENAOEXISTE encontrado'
     end
+
+    it 'e realiza upload de arquivo csv' do
+      csv_file_path = '/app/spec/support/csv/test.csv'
+      visit '/'
+
+      attach_file('file', csv_file_path)
+
+      click_button('Enviar')
+
+      expect(page).to have_content('Conversão de dados iniciada. Atualize a página para ver os dados na tabela')
+    end
+
+    it 'e realiza upload de arquivo não suportado' do
+      pdf_file_path = '/app/spec/support/pdf/dummy.pdf'
+      visit '/'
+
+      attach_file('file', pdf_file_path)
+
+      click_button('Enviar')
+
+      expect(page).to have_content('Extensão não suportada')
+    end
   end
 end

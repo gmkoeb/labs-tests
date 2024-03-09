@@ -1,12 +1,14 @@
 let testsUrl = 'http://localhost:3000/tests' + environment();
 const doctorsUrl = 'http://localhost:3000/doctors' + environment();
 const patientsUrl = 'http://localhost:3000/patients' + environment();
+const importUrl = 'http://localhost:3000/import' + environment();
 
 const doctors = document.getElementById('doctors');
 const patients = document.getElementById('patients');
 const exams = document.getElementById('exams');
 const buttons = document.querySelectorAll('.navLink');
 const emptyMessage = document.getElementById('emptyMessage');
+const uploadStatus = document.getElementById('uploadStatus')
 
 getTests();
 
@@ -79,6 +81,7 @@ function environment() {
 function toggleElement(event) {
   document.getElementById('filteredExams').style.display = 'none'
   emptyMessage.textContent = ''
+  uploadStatus.textContent = ''
   const clickedButton = event.target;
   clickedButton.classList.toggle('active');
   buttons.forEach((btn) => {
@@ -252,6 +255,33 @@ function getFilteredExams(event){
       console.log(error);
   });
 }
+
+function sendFile(event) {
+  event.preventDefault();
+  const formData = new FormData();
+  const fileInput = document.getElementById('file'); 
+  const file = fileInput.files[0];
+  formData.append('file', file);
+
+  fetch(importUrl, {
+    method: 'POST',
+    body: formData
+  })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    return response.text();
+  }).then(data => {
+    const parsedData = JSON.parse(data);
+    const conversionStatus = parsedData.conversion_status
+    uploadStatus.textContent = conversionStatus;
+  })
+  .catch(error => {
+    console.error('Error during file upload:', error);
+  });
+}
+
 
 function filterTable() {
   const input = document.getElementById('filterInput').value.toUpperCase();

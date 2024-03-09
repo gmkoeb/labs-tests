@@ -1,7 +1,7 @@
 build_api: 
 	docker build -t labs-tests .
 run_api: build_api
-	docker run --rm --name labs-tests --network rebase_labs -p 3000:3000 -d labs-tests
+	docker run --rm --name labs-tests --network rebase_labs -p 3000:3000 -v $(PWD)/api:/app -d labs-tests
 run_db:
 	docker run --rm --name postgres --network rebase_labs -v pgdata:/var/lib/postgresql/data -p 5432:5432 -e POSTGRES_PASSWORD=postgres -d postgres
 run_web:

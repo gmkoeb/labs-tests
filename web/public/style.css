@@ -116,3 +116,17 @@ form > button:hover{
 #emptyMessage{
   text-align: center;
 }
+
+.forms{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.fileUpload{
+  width: 25rem;
+}
+
+#fileSubmit{
+  width: 50%;
+}

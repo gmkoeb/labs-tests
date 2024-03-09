@@ -17,17 +17,27 @@
       <button class="navLink" onclick="toggleElement(event)">Pacientes</button>
     </nav>
   </header>
-  <div class="searchInput">
-    <div id="filterByName">
-      <label for="filterInput">Pesquisa por Nome</label>
-      <input type="text" placeholder="pesquisar paciente ou médico" id="filterInput" oninput=" filterTable()">
+  <div class="forms">
+    <div class="searchInput">
+      <div id="filterByName">
+        <label for="filterInput">Pesquisa por Nome</label>
+        <input type="text" placeholder="pesquisar paciente ou médico" id="filterInput" oninput=" filterTable()">
+      </div>
+      <div>
+        <form onsubmit="getFilteredExams(event)" action="/" method="get">
+          <label for="filterByToken">Pesquisa por Código</label>
+          <input type="text" placeholder="digite um código..." id="filterByToken">
+          <button type="submit">Pesquisar</button>
+        </form>
+      </div>
     </div>
-    <div>
-      <form onsubmit="getFilteredExams(event)" action="/" method="get">
-        <label for="filterByToken">Pesquisa por Código</label>
-        <input type="text" placeholder="digite um código..." id="filterByToken">
-        <button type="submit">Pesquisar</button>
+    <div class="fileUpload">
+      <form action="/" method="post" onsubmit="sendFile(event)" enctype="multipart/form-data">
+        <label for="file">Enviar Dados</label>
+        <input type="file" name="file" id="file" accept=".csv">
+        <button id="fileSubmit" type="submit">Enviar</button>
       </form>
+      <span id="uploadStatus"></span>
     </div>
   </div>
   <div>
