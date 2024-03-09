@@ -20,7 +20,7 @@ Para executar a aplicação você deve:
 
 4. Inicializar containers:
    
-        make build_containers
+        make run_containers
 
 6. A API estará rodando no endereço:
 
