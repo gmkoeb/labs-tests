@@ -2,9 +2,10 @@
 
 A URL base para os endpoints é http://localhost:3000
 
-1. Lista de exames:
+### Lista de exames:
 
- GET /tests
+<details>
+<summary>GET /tests</summary>
 
 ```
 [
@@ -35,9 +36,11 @@ A URL base para os endpoints é http://localhost:3000
 ]
 ```
 
-2. Busca de exames por token:
+</details>
 
-GET /tests/:token
+### Busca de exames por token:
+<details>
+<summary>GET /tests/:token</summary>
 
 exemplo: GET /tests/IQCZ17
 
@@ -67,9 +70,22 @@ exemplo: GET /tests/IQCZ17
        }]
 }
 ```
-3. Lista de pacientes:
 
- GET /patients
+Caso nenhum exame seja encontrado: 
+
+Exemplo: GET /tests/token-inexistente
+
+```
+{
+  "test_not_found": "Nenhum exame com código token-inexistente encontrado"
+}
+```
+</details>
+
+### Lista de pacientes:
+
+<details>
+<summary>GET /patients</summary>
 
 ```
 [
@@ -85,10 +101,12 @@ exemplo: GET /tests/IQCZ17
   }
 ]
 ```
+</details>
 
-4. Lista de médicos:
+### Lista de médicos:
 
- GET /doctors
+<details>
+<summary>GET /doctors</summary>
 
 ```
 [
@@ -101,7 +119,40 @@ exemplo: GET /tests/IQCZ17
   }
 ]
 ```
+</details>
 
-5. Upload de arquivos:
+### Upload de arquivos:
+<details>
+<summary>POST /import</summary>
+Retorna como resposta uma token para checar status do job que processará o csv:
 
- POST /import
+```
+{
+	"token": "KQSNYXGN"
+}
+```
+
+</details>
+
+### Checar status de um job:
+Com a token recebida ao realizar um POST com um arquivo .csv na rota import, você pode checar o status de um job através da rota:
+<details>
+<summary>GET /job_status/:token</summary>
+
+Exemplo: GET /job_status/KQSNYXGN
+
+```
+{
+  "job_status": "pending"
+}
+```
+
+Caso o job tenha terminado o processamento dos dados:
+
+```
+{
+  "job_status": "done"
+}
+```
+
+</details>
