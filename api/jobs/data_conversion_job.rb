@@ -1,5 +1,6 @@
 require 'sidekiq'
-require_relative '../import_from_csv'
+require_relative '../data/database'
+
 class DataConversionJob
   include Sidekiq::Job
 
@@ -18,20 +19,18 @@ class DataConversionJob
     connection = PG.connect(dbname:'test', user: 'postgres', password: 'postgres', host: 'postgres')
     pp 'Data conversion started'
     rows.map do |row|
-      populate_tables(row, connection)
+      Database.populate_tables(row, connection)
     end
     pp 'Data conversion ended'
   end
 
   def populate_development_tables(rows)
-    create_tables
-    db_connection do |connection|
+    Database.connection do |connection|
       pp 'Data conversion started'
       rows.map do |row|
-        populate_tables(row, connection)
+        Database.populate_tables(row, connection)
       end
       pp 'Data conversion ended'
     end
   end
-
 end

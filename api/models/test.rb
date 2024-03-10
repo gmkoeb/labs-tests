@@ -1,4 +1,4 @@
-require_relative '../import_from_csv.rb'
+require_relative '../data/database'
 require_relative '../data_structures/array.rb'
 require_relative 'application.rb'
 
@@ -18,7 +18,7 @@ class Test < Application
 
   def self.all
     tests = []
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec('SELECT * FROM tests;').to_a
         data.each do |d|
@@ -35,7 +35,7 @@ class Test < Application
 
   def self.create(attributes)
     test = {}
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         connection.exec('
         INSERT INTO tests (
@@ -58,7 +58,7 @@ class Test < Application
 
   def self.where(attributes)
     tests = []
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec(
          'SELECT *
@@ -83,7 +83,7 @@ class Test < Application
 
   def self.all_with_foreign
     tests = []
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         tests = connection.exec('
         SELECT
@@ -103,7 +103,7 @@ class Test < Application
 
   def patient
     patient = {}
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec('SELECT *
                                 FROM patients
@@ -122,7 +122,7 @@ class Test < Application
 
   def doctor
     doctor = {}
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec('SELECT *
                                 FROM doctors

@@ -1,11 +1,10 @@
 require 'sinatra'
 require 'csv'
-require_relative 'import_from_csv.rb'
+require_relative './data/database'
 require_relative './models/test.rb'
 require_relative './models/doctor.rb'
 require_relative './models/patient.rb'
 require_relative './jobs/data_conversion_job'
-set :protection, :except => :json_csrf
 
 before do
   if params[:env] == 'test'
@@ -51,6 +50,9 @@ end
 
 set :bind, '0.0.0.0'
 set :port, 3000
+set :protection, :except => :json_csrf
+
+Database.create_tables
 
 private
 

@@ -1,4 +1,4 @@
-require_relative '../import_from_csv.rb'
+require_relative '../data/database'
 require_relative '../models/patient.rb'
 require_relative '../models/doctor.rb'
 require_relative '../models/test.rb'
@@ -47,7 +47,7 @@ RSpec.configure do |config|
     ensure
       db_connection.close if db_connection
     end
-    create_tables
+    Database.create_tables
   end
 
   config.before(:each, type: :system) do
@@ -71,7 +71,7 @@ RSpec.configure do |config|
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
     config.after(:each) do
-      db_connection do |connection|
+      Database.connection do |connection|
         connection.exec("DROP TABLE IF EXISTS tests, patients, doctors")
       end
     end

@@ -1,4 +1,4 @@
-require_relative '../import_from_csv.rb'
+require_relative '../data/database'
 require_relative 'application.rb'
 
 class Patient < Application
@@ -17,7 +17,7 @@ class Patient < Application
 
   def self.all
     patients = []
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec('SELECT * FROM patients;').to_a
         data.each do |d|
@@ -34,7 +34,7 @@ class Patient < Application
 
   def self.create(attributes)
     patient = {}
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         patient = connection.exec('
         INSERT INTO patients (
@@ -57,7 +57,7 @@ class Patient < Application
 
   def tests
     tests = []
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec('SELECT *
                                 FROM tests

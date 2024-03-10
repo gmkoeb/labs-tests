@@ -14,7 +14,7 @@ class Doctor < Application
 
   def self.all
     doctors = []
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec('SELECT * FROM doctors;').to_a
         data.each do |d|
@@ -30,7 +30,7 @@ class Doctor < Application
 
   def self.create(attributes)
     doctor = {}
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         connection.exec('
         INSERT INTO doctors (
@@ -50,7 +50,7 @@ class Doctor < Application
 
   def tests
     tests = []
-    db_connection do |connection|
+    Database.connection do |connection|
       begin
         data = connection.exec('SELECT *
                                 FROM tests
