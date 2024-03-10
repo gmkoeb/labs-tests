@@ -135,6 +135,11 @@ form > button:hover{
   margin-left: -3px;
 }
 
+#uploadStatus{
+  margin: 3px 0 3px 0;
+  font-weight: bold;
+}
+
 label > span {
   font-size: 12px;
   color: red;

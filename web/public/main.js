@@ -290,15 +290,16 @@ async function sendFile(event) {
     const jobStatusUrl = `http://localhost:3000/job_status/${token}`;
     if (parsedData.conversion_error) {
       uploadStatus.textContent = parsedData.conversion_error;
+      uploadStatus.style.color = 'red'
     }else{
+      uploadStatus.style.color = 'green'
       uploadStatus.textContent = 'Conversão de dados iniciada'
+      await new Promise(r => setTimeout(r, 1000));
+  
+      await waitForJobCompletion(jobStatusUrl);
+      getTests();
+      uploadStatus.textContent = 'Conversão concluída'
     }
-    
-    await new Promise(r => setTimeout(r, 1000));
-
-    await waitForJobCompletion(jobStatusUrl);
-    getTests();
-    uploadStatus.textContent = 'Conversão concluída'
   } catch (error) {
     console.error('Error during file upload:', error);
   }
