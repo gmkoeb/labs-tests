@@ -198,12 +198,13 @@ function getFilteredExams(event){
   fetch(testsUrl)
     .then((response) => response.json())
     .then((data) => {
-      if (data === null) {
-        emptyMessage.textContent = `Nenhum exame com código ${token} encontrado`
-        document.body.appendChild(emptyMessage);
-      } else {
-        emptyMessage.textContent = ''
+      
+      if (data.test_not_found) {   
+        emptyMessage.textContent = data.test_not_found
       }
+
+      document.body.appendChild(emptyMessage);
+      
       data.tests.forEach(function(testItem) {
         const tr = document.createElement('tr');
         const name = document.createElement('td');

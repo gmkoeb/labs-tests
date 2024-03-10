@@ -22,7 +22,11 @@ end
 
 get '/tests/:token' do
   tests = Test.where(token: params[:token])
-  format_tests_response(tests)
+  if tests.any?
+    format_tests_response(tests)
+  else
+    { test_not_found: "Nenhum exame com código #{params[:token]} encontrado" }.to_json
+  end
 end
 
 get '/doctors' do
@@ -35,22 +39,14 @@ end
 
 get '/job_status/:token' do
   status = JobStatus.find_by(token: params[:token]).status
-  {job_status: status}.to_json
+  { job_status: status }.to_json
 end
 
 post '/import' do
   if params[:file]
-    file_name = params[:file][:filename]
-    file_extension = File.extname(file_name)
-    if file_extension == '.csv'
-      file = params[:file][:tempfile]
-      rows = CSV.read(file, col_sep: ';')
-      token = SecureRandom.alphanumeric(8).upcase
-      DataConversionJob.perform_async(rows, params[:env], token)
-      {token: token}.to_json
-    else
-      {conversion_error: 'Extensão não suportada'}.to_json
-    end
+    process_file(params[:file])
+  else
+    { conversion_error: 'Nenhum arquivo fornecido' }.to_json
   end
 end
 
@@ -62,6 +58,21 @@ Database.create_tables
 
 
 private
+
+def process_file(file)
+  file_extension = File.extname(file[:filename])
+  if file_extension == '.csv'
+    file_data = file[:tempfile]
+    rows = CSV.read(file_data, col_sep: ';')
+    token = SecureRandom.alphanumeric(8).upcase
+
+    DataConversionJob.perform_async(rows, params[:env], token)
+
+    { token: token }.to_json
+  else
+    { conversion_error: 'Extensão não suportada' }.to_json
+  end
+end
 
 def format_tests_response(tests)
   tests.group_by { |test| test.token }.map do |token, tests|

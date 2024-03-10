@@ -106,6 +106,24 @@ describe 'Tests API' do
       expect(json_response["tests"][0]["type_limits"]).to include('97-102')
       expect(json_response["tests"][0]["type_result"]).to include('412')
     end
+
+    it 'não encontra nenhum exame' do
+      Patient.create(name: 'Paciente de Teste', email: 'email@email.com', registration_number: '123.456',
+                     birth_date: '2022-02-03', address: 'Rua teste', city: 'Cidade teste',
+                     state: 'Estado teste')
+      Doctor.create(name: 'Doutor 1', email: 'doutor1@email.com', crm: 'ABC123', crm_state: 'TE')
+      Doctor.create(name: 'Doutor de Teste', email: 'doutor@email.com', crm: 'DEF456', crm_state: 'TE')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'TOKEN123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      uri = URI("http://localhost:3000/tests/ABC123456?env=test")
+      response = Net::HTTP.get_response(uri)
+      json_response = JSON.parse(response.body)
+
+      expect(response.code).to eq '200'
+      expect(response.content_type).to include 'application/json'
+      expect(json_response["test_not_found"]).to include('Nenhum exame com código ABC123456 encontrado')
+    end
   end
 
   context 'POST /import' do
