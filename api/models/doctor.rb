@@ -1,4 +1,4 @@
-require_relative '../import_from_csv.rb'
+require_relative '../data/database'
 require_relative 'application.rb'
 
 class Doctor < Application
