@@ -54,7 +54,7 @@ Ou:
 ## Testes
 Para executar os testes, você deve:
 
-1. Entrar no container do servidor:
+1. Entrar no container da API:
 
        docker exec -it labs-tests bash
 
