@@ -4,7 +4,7 @@
 - [Instalação e Execução](#instalação-e-execução)
 - [Popular banco de dados](#popular-banco-de-dados)
 - [Testes](#testes)
-- [Endpoints](#endpoints)
+- [Documentação da API](#documentação-da-api)
 
 ## Instalação e Execução
 Para executar a aplicação você deve:
@@ -60,3 +60,5 @@ Para executar os testes, você deve:
        rspec
 
 Observação: Alguns testes que executam jobs dependem do sidekiq, então, caso os containers do sidekiq/redis não estejam rodando esses testes falharão
+## Documentação da API
+A documentação da API pode ser consultada [neste link](https://github.com/gmkoeb/labs-tests/blob/main/api_doc.md)
