@@ -29,6 +29,9 @@ Para executar a aplicação você deve:
 7. A aplicação web (front-end) estará rodando no endereço:
 
         http://localhost:3001
+8. Caso deseje, você pode parar todos os containers com o comando:
+
+        make stop_containers
 
 ## Popular banco de dados   
 Para transferir os dados do arquivo csv para o postgres, você deve:
