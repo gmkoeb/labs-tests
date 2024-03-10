@@ -270,14 +270,11 @@ async function sendFile(event) {
   const formData = new FormData();
   const fileInput = document.getElementById('file'); 
   const file = fileInput.files[0];
-  const token = Math.random().toString(36).slice(6).toUpperCase();
-  const tokenUrl = `?token=${token}`;
-  const jobStatusUrl = `http://localhost:3000/job_status/${token}`;
-  
+
   formData.append('file', file);
 
   try {
-    const importResponse = await fetch(importUrl + tokenUrl, {
+    const importResponse = await fetch(importUrl, {
       method: 'POST',
       body: formData
     });
@@ -288,13 +285,17 @@ async function sendFile(event) {
 
     const importData = await importResponse.text();
     const parsedData = JSON.parse(importData);
-    const conversionStatus = parsedData.conversion_status;
-    uploadStatus.textContent = conversionStatus;
-
+    const token = parsedData.token;
+    const jobStatusUrl = `http://localhost:3000/job_status/${token}`;
+    if (parsedData.conversion_error) {
+      uploadStatus.textContent = parsedData.conversion_error;
+    }else{
+      uploadStatus.textContent = 'Conversão de dados iniciada'
+    }
+    
     await new Promise(r => setTimeout(r, 1000));
 
     await waitForJobCompletion(jobStatusUrl);
-    
     getTests();
     uploadStatus.textContent = 'Conversão concluída'
   } catch (error) {

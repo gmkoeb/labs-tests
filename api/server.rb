@@ -45,10 +45,11 @@ post '/import' do
     if file_extension == '.csv'
       file = params[:file][:tempfile]
       rows = CSV.read(file, col_sep: ';')
-      DataConversionJob.perform_async(rows, params[:env], params[:token])
-      {conversion_status: 'Conversão de dados iniciada'}.to_json
+      token = SecureRandom.alphanumeric(8).upcase
+      DataConversionJob.perform_async(rows, params[:env], token)
+      {token: token}.to_json
     else
-      {conversion_status: 'Extensão não suportada'}.to_json
+      {conversion_error: 'Extensão não suportada'}.to_json
     end
   end
 end

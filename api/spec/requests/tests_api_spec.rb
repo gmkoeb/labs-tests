@@ -118,12 +118,11 @@ describe 'Tests API' do
       {
         'file' => UploadIO.new(File.open(csv_file_path), 'text/csv', File.basename(csv_file_path))
       })
-
       response = http.request(request)
       json_response = JSON.parse(response.body)
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      expect(json_response['conversion_status']).to eq 'Conversão de dados iniciada'
+      expect(json_response['token']).to_not be nil
       sleep 0.5
       expect(Patient.last.name).to eq 'Paciente Teste Neto'
       expect(Patient.last.registration_number).to eq '123456'
@@ -157,7 +156,7 @@ describe 'Tests API' do
       json_response = JSON.parse(response.body)
       expect(response.code).to eq '200'
       expect(response.content_type).to include 'application/json'
-      expect(json_response['conversion_status']).to eq 'Extensão não suportada'
+      expect(json_response['conversion_error']).to eq 'Extensão não suportada'
     end
   end
 end
