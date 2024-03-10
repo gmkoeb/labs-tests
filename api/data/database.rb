@@ -67,6 +67,13 @@ class Database
           type_result VARCHAR(255),
           UNIQUE (token, type)
         );')
+
+      connection.exec(
+        "CREATE TABLE job_status (
+          id SERIAL PRIMARY KEY,
+          token VARCHAR(8),
+          status VARCHAR(10) DEFAULT 'pending'
+        );")
     rescue PG::Error => e
       puts "Error creating table: #{e.message}"
     end

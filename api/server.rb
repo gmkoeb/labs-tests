@@ -33,6 +33,11 @@ get '/patients' do
   Patient.all.as_json
 end
 
+get '/job_status/:token' do
+  status = JobStatus.find_by(token: params[:token]).status
+  {job_status: status}.to_json
+end
+
 post '/import' do
   if params[:file]
     file_name = params[:file][:filename]
@@ -40,7 +45,7 @@ post '/import' do
     if file_extension == '.csv'
       file = params[:file][:tempfile]
       rows = CSV.read(file, col_sep: ';')
-      DataConversionJob.perform_async(rows, params[:env])
+      DataConversionJob.perform_async(rows, params[:env], params[:token])
       {conversion_status: 'Conversão de dados iniciada'}.to_json
     else
       {conversion_status: 'Extensão não suportada'}.to_json
@@ -53,6 +58,7 @@ set :port, 3000
 set :protection, :except => :json_csrf
 
 Database.create_tables
+
 
 private
 

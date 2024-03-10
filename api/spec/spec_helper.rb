@@ -2,6 +2,7 @@ require_relative '../data/database'
 require_relative '../models/patient.rb'
 require_relative '../models/doctor.rb'
 require_relative '../models/test.rb'
+require_relative '../models/job_status.rb'
 require_relative '../models/application.rb'
 require 'capybara/cuprite'
 require 'capybara/rspec'
@@ -72,7 +73,7 @@ RSpec.configure do |config|
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
     config.after(:each) do
       Database.connection do |connection|
-        connection.exec("DROP TABLE IF EXISTS tests, patients, doctors")
+        connection.exec("DROP TABLE IF EXISTS tests, patients, doctors, job_status")
       end
     end
   end

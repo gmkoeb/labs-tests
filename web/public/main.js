@@ -253,33 +253,78 @@ function getFilteredExams(event){
   });
 }
 
-function sendFile(event) {
+
+function getJobStatus(tokenUrl){
+  fetch(tokenUrl)
+    .then((response) => response.json())
+    .then((data) => {
+      return JSON.parse(data)
+    })
+    .catch(function(error) {
+      console.log(error);
+  });
+}
+
+async function sendFile(event) {
   event.preventDefault();
   const formData = new FormData();
   const fileInput = document.getElementById('file'); 
   const file = fileInput.files[0];
+  const token = Math.random().toString(36).slice(6).toUpperCase();
+  const tokenUrl = `?token=${token}`;
+  const jobStatusUrl = `http://localhost:3000/job_status/${token}`;
+  
   formData.append('file', file);
 
-  fetch(importUrl, {
-    method: 'POST',
-    body: formData
-  })
-  .then(response => {
+  try {
+    const importResponse = await fetch(importUrl + tokenUrl, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!importResponse.ok) {
+      throw new Error('Network response was not ok');
+    }
+
+    const importData = await importResponse.text();
+    const parsedData = JSON.parse(importData);
+    const conversionStatus = parsedData.conversion_status;
+    uploadStatus.textContent = conversionStatus;
+
+    await new Promise(r => setTimeout(r, 1000));
+
+    await waitForJobCompletion(jobStatusUrl);
+    
+    getTests();
+    uploadStatus.textContent = 'Conversão concluída'
+  } catch (error) {
+    console.error('Error during file upload:', error);
+  }
+}
+
+async function waitForJobCompletion(jobStatusUrl) {
+  while (true) {
+    const jobStatus = getJobStatus(jobStatusUrl);
+    if (jobStatus !== 'pending') {
+      break;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+}
+
+async function getJobStatus(jobStatusUrl) {
+  try {
+    const response = await fetch(jobStatusUrl);
     if (!response.ok) {
       throw new Error('Network response was not ok');
     }
-    return response.text();
-  }).then(data => {
-    const parsedData = JSON.parse(data);
-    const conversionStatus = parsedData.conversion_status
-    uploadStatus.textContent = conversionStatus;
-  }).then(setTimeout(() => {
-    getTests();
-    uploadStatus.textContent = 'Conversão de dados concluída. Atualize a página caso não esteja vendo os dados na tabela'
-  }, 3000))
-  .catch(error => {
-    console.error('Error during file upload:', error);
-  });
+    const data = await response.json();
+    return data.job_status;
+  } catch (error) {
+    console.error('Error getting job status:', error);
+    throw error;
+  }
 }
 
 function filterTable() {

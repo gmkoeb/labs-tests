@@ -1,36 +1,35 @@
 require 'sidekiq'
 require_relative '../data/database'
+require_relative '../models/job_status'
 
 class DataConversionJob
   include Sidekiq::Job
 
-  def perform(rows, env)
+  def perform(rows, env, token)
     columns = rows.shift
     if env == 'test'
-      populate_test_tables(rows)
+      populate_test_tables(rows, token)
     else
-      populate_development_tables(rows)
+      populate_development_tables(rows, token)
     end
   end
 
   private
 
-  def populate_test_tables(rows)
+  def populate_test_tables(rows, token)
     connection = PG.connect(dbname:'test', user: 'postgres', password: 'postgres', host: 'postgres')
-    pp 'Data conversion started'
     rows.map do |row|
       Database.populate_tables(row, connection)
     end
-    pp 'Data conversion ended'
   end
 
-  def populate_development_tables(rows)
+  def populate_development_tables(rows, token)
+    JobStatus.create(token:)
     Database.connection do |connection|
-      pp 'Data conversion started'
       rows.map do |row|
         Database.populate_tables(row, connection)
       end
-      pp 'Data conversion ended'
     end
+    JobStatus.find_by(token:).done
   end
 end
