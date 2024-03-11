@@ -98,6 +98,23 @@ class Database
     )
   end
 
+  def self.drop_tables
+    connection do |connection|
+      connection.exec("DROP TABLE tests, patients, doctors, job_status")
+    end
+  end
+
+  def self.create_test_db
+    begin
+      db_connection = PG.connect(dbname: 'postgres', user: 'postgres', password: 'postgres', host: 'postgres')
+      db_connection.exec('CREATE DATABASE test')
+      puts "Database 'test' created successfully."
+    rescue PG::Error
+    ensure
+      db_connection.close if db_connection
+    end
+  end
+
   private
 
   def self.find_or_create_patient(row, connection)

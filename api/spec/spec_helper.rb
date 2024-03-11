@@ -38,23 +38,16 @@ end
 # See https://rubydoc.info/gems/rspec-core/RSpec/Core/Configuration
 
 RSpec.configure do |config|
-  ENV['RACK_ENV'] = 'test'
+  Database.create_test_db
+
   config.before(:each) do
-    begin
-      db_connection = PG.connect(dbname: 'postgres', user: 'postgres', password: 'postgres', host: 'postgres')
-      db_connection.exec('CREATE DATABASE test')
-      puts "Database 'test' created successfully."
-    rescue PG::Error
-    ensure
-      db_connection.close if db_connection
-    end
+    ENV['RACK_ENV'] = 'test'
     Database.create_tables
   end
 
   config.before(:each, type: :system) do
     Capybara.javascript_driver = :cuprite
     Capybara.current_driver = Capybara.javascript_driver
-    Capybara.server_host = '0.0.0.0'
     Capybara.app_host = 'http://web:3001'
     Capybara.default_max_wait_time = 5
     Capybara.disable_animation = true
@@ -71,11 +64,10 @@ RSpec.configure do |config|
     # ...rather than:
     #     # => "be bigger than 2"
     expectations.include_chain_clauses_in_custom_matcher_descriptions = true
-    config.after(:each) do
-      Database.connection do |connection|
-        connection.exec("DROP TABLE IF EXISTS tests, patients, doctors, job_status")
-      end
-    end
+  end
+
+  config.after(:each) do
+    Database.drop_tables
   end
 
   # rspec-mocks config goes here. You can use an alternate test double
