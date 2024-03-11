@@ -56,7 +56,6 @@ set :protection, :except => :json_csrf
 
 Database.create_tables
 
-
 private
 
 def process_file(file)

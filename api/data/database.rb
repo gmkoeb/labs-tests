@@ -70,7 +70,7 @@ class Database
         );')
 
       connection.exec(
-        "CREATE TABLE job_status (
+        "CREATE TABLE jobs_status (
           id SERIAL PRIMARY KEY,
           token VARCHAR(8),
           status VARCHAR(10) DEFAULT 'pending'
@@ -100,7 +100,7 @@ class Database
 
   def self.drop_tables
     connection do |connection|
-      connection.exec("DROP TABLE tests, patients, doctors, job_status")
+      connection.exec("DROP TABLE tests, patients, doctors, jobs_status")
     end
   end
 

@@ -15,7 +15,7 @@ class JobStatus < Application
     Database.connection do |connection|
       begin
         connection.exec('
-        INSERT INTO job_status (token)
+        INSERT INTO jobs_status (token)
         VALUES ($1)',
         [attributes[:token]])
         job_status = last
@@ -31,7 +31,7 @@ class JobStatus < Application
     jobs_status = []
     Database.connection do |connection|
       begin
-        data = connection.exec('SELECT * FROM job_status;').to_a
+        data = connection.exec('SELECT * FROM jobs_status;').to_a
         data.each do |d|
           jobs_status << JobStatus.new(id: d['id'].to_i, status: d['status'], token: d['token'])
         end
@@ -48,7 +48,7 @@ class JobStatus < Application
       begin
         data = connection.exec(
          'SELECT *
-          FROM job_status
+          FROM jobs_status
           WHERE token = $1',
           [attributes[:token]]).to_a.first
 
@@ -63,7 +63,7 @@ class JobStatus < Application
   def done
     Database.connection do |connection|
       begin
-        connection.exec("UPDATE job_status
+        connection.exec("UPDATE jobs_status
                          SET status = 'done'
                          WHERE id = $1;",
                          [@id])
