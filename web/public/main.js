@@ -308,7 +308,7 @@ async function sendFile(event) {
 async function waitForJobCompletion(jobStatusUrl) {
   while (true) {
     const jobStatus = getJobStatus(jobStatusUrl);
-    if (jobStatus !== 'pending') {
+    if (jobStatus === 'done') {
       break;
     }
 
