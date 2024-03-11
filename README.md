@@ -29,11 +29,23 @@ Para executar a aplicação você deve:
 7. A aplicação web (front-end) estará rodando no endereço:
 
         http://localhost:3001
+8. Caso deseje, você pode parar todos os containers com o comando:
+
+        make stop_containers
 
 ## Popular banco de dados   
-Para transferir os dados do arquivo csv para o postgres, você deve:
 
-1. Entrar no container do servidor:
+Para transferir os dados do arquivo csv para o postgres, você deve: 
+
+1. Entrar na url web (com todos os containers rodando):
+
+        http://localhost:3001
+
+2. Realizar upload do arquivo csv através do formulário
+
+Ou
+
+1. Entrar no container da API:
 
        docker exec -it labs-tests bash
 
@@ -41,17 +53,10 @@ Para transferir os dados do arquivo csv para o postgres, você deve:
 
        ruby import_from_csv.rb
 
-Ou: 
-
-1. Entrar na url web (com todos os containers rodando):
-
-        http://localhost:3001
-
-2. Realizar upload do arquivo csv através do formulário
 ## Testes
 Para executar os testes, você deve:
 
-1. Entrar no container do servidor:
+1. Entrar no container da API:
 
        docker exec -it labs-tests bash
 
