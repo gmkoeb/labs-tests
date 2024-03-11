@@ -290,9 +290,9 @@ async function sendFile(event) {
     const jobStatusUrl = `http://localhost:3000/job_status/${token}`;
     if (parsedData.conversion_error) {
       uploadStatus.textContent = parsedData.conversion_error;
-      uploadStatus.style.color = 'red'
+      uploadStatus.style.color = '#dc3545'
     }else{
-      uploadStatus.style.color = 'green'
+      uploadStatus.style.color = '#28a745'
       uploadStatus.textContent = 'Conversão de dados iniciada'
       await new Promise(r => setTimeout(r, 1000));
   

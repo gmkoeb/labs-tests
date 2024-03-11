@@ -1,4 +1,5 @@
 require 'pg'
+require 'csv'
 
 class Database
   def self.convert_data
@@ -96,6 +97,8 @@ class Database
       [patient_id, doctor_id, row[11], row[12], row[13], row[14], row[15]]
     )
   end
+
+  private
 
   def self.find_or_create_patient(row, connection)
     patient_id_query = connection.exec(
