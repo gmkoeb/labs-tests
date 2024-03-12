@@ -6,6 +6,12 @@ require_relative './models/doctor.rb'
 require_relative './models/patient.rb'
 require_relative './jobs/data_conversion_job'
 
+set :bind, '0.0.0.0'
+set :port, 3000
+set :protection, :except => [:json_csrf], :origin_whitelist => ['http://localhost:3001'], :frame_options => 'DENY'
+
+Database.create_tables
+
 before do
   if params[:env] == 'test'
     ENV['RACK_ENV'] = 'test'
@@ -13,7 +19,7 @@ before do
     ENV['RACK_ENV'] = 'development'
   end
   content_type :json
-  response.headers['Access-Control-Allow-Origin'] = '*'
+  response.headers['Access-Control-Allow-Origin'] = 'http://localhost:3001'
 end
 
 get '/tests' do
@@ -49,12 +55,6 @@ post '/import' do
     { conversion_error: 'Nenhum arquivo fornecido' }.to_json
   end
 end
-
-set :bind, '0.0.0.0'
-set :port, 3000
-set :protection, :except => :json_csrf
-
-Database.create_tables
 
 private
 
