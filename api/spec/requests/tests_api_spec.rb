@@ -177,4 +177,18 @@ describe 'Tests API' do
       expect(json_response['conversion_error']).to eq 'Extensão não suportada'
     end
   end
+
+  context 'GET /job_status/:token' do
+    it 'success' do
+      job_status = JobStatus.create(token: 'TESTE123')
+
+      uri = URI("http://localhost:3000/job_status/TESTE123?env=test")
+      response = Net::HTTP.get_response(uri)
+      json_response = JSON.parse(response.body)
+
+      expect(response.code).to eq '200'
+      expect(response.content_type).to include 'application/json'
+      expect(json_response['job_status']).to eq 'pending'
+    end
+  end
 end

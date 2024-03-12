@@ -40,4 +40,16 @@ RSpec.describe Doctor, type: :model do
       expect(doctor_tests[1].type).to eq second_test.type
     end
   end
+
+  describe '#create' do
+    it 'cria médico' do
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com',
+                    crm: 'ABC123', crm_state: 'TE')
+
+      expect(Doctor.last.name).to eq 'Doutor'
+      expect(Doctor.last.email).to eq 'doutor@email.com'
+      expect(Doctor.last.crm).to eq 'ABC123'
+      expect(Doctor.last.crm_state).to eq 'TE'
+    end
+  end
 end

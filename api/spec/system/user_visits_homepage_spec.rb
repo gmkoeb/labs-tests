@@ -183,6 +183,7 @@ RSpec.describe "Home page", type: :system do
 
     it 'e realiza upload de arquivo csv' do
       csv_file_path = '/app/spec/support/csv/test.csv'
+
       visit '/'
 
       attach_file('file', csv_file_path)
@@ -194,6 +195,7 @@ RSpec.describe "Home page", type: :system do
 
     it 'e realiza upload de arquivo não suportado' do
       pdf_file_path = '/app/spec/support/pdf/dummy.pdf'
+
       visit '/'
 
       attach_file('file', pdf_file_path)

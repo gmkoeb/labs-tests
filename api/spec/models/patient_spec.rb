@@ -41,4 +41,20 @@ RSpec.describe Patient, type: :model do
       expect(patient_tests.first.patient.registration_number).to eq patient.registration_number
     end
   end
+
+  describe '#create' do
+    it 'cria paciente' do
+      Patient.create(name: 'Paciente', email: 'paciente@email.com', registration_number: '123456',
+                     birth_date: '1997-01-17', address: 'Rua dos Testes 153', city: 'Cidade dos Testes',
+                     state: 'Estado dos Testes')
+
+      expect(Patient.last.name).to eq 'Paciente'
+      expect(Patient.last.email).to eq 'paciente@email.com'
+      expect(Patient.last.registration_number).to eq '123456'
+      expect(Patient.last.birth_date).to eq '1997-01-17'
+      expect(Patient.last.address).to eq 'Rua dos Testes 153'
+      expect(Patient.last.city).to eq 'Cidade dos Testes'
+      expect(Patient.last.state).to eq 'Estado dos Testes'
+    end
+  end
 end

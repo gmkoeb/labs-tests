@@ -242,4 +242,22 @@ RSpec.describe Test, type: :model do
       expect(tests[0].token).to eq 'abc123'
     end
   end
+
+  describe '#create' do
+    it 'cria exame' do
+      Patient.create(name: 'Paciente', email: 'paciente@email.com', registration_number: '123456',
+                     birth_date: '1997-01-17', address: 'Rua dos Testes 153', city: 'Cidade dos Testes',
+                     state: 'Estado dos Testes')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com',
+                    crm: 'ABC123', crm_state: 'TE')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+
+      expect(Test.last.doctor.name).to eq 'Doutor'
+      expect(Test.last.doctor.crm).to eq 'ABC123'
+      expect(Test.last.patient.name).to eq 'Paciente'
+      expect(Test.last.patient.registration_number).to eq '123456'
+      expect(Test.last.token).to eq 'abc123'
+    end
+  end
 end
