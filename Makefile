@@ -15,6 +15,6 @@ run_sidekiq:
 		-e REDIS_URL=redis://redis:6379/0 \
 		-d ruby \
 		bash -c "gem install sidekiq pg && sidekiq -r ./jobs/data_conversion_job.rb"
-run_containers: build_api run_api run_db run_web run_redis run_sidekiq
+run_containers: build_api run_db run_web run_api run_redis run_sidekiq
 stop_containers: 
 	docker stop labs-tests postgres web redis sidekiq
