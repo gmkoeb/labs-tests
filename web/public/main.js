@@ -1,7 +1,12 @@
-let testsUrl = 'http://localhost:3000/tests' + environment();
-const doctorsUrl = 'http://localhost:3000/doctors' + environment();
-const patientsUrl = 'http://localhost:3000/patients' + environment();
-const importUrl = 'http://localhost:3000/import' + environment();
+let environment = '';
+const baseAPIUrl = 'http://localhost:3000'
+
+getEnvironment();
+
+let testsUrl = `${baseAPIUrl}/tests${environment}`;
+const doctorsUrl = `${baseAPIUrl}/doctors${environment}`;
+const patientsUrl = `${baseAPIUrl}/patients${environment}`;
+const importUrl = `${baseAPIUrl}/import${environment}`;
 
 const doctors = document.getElementById('doctors');
 const patients = document.getElementById('patients');
@@ -67,13 +72,13 @@ function getTests() {
   });
 }
 
-function environment() {
+function getEnvironment() {
   const isUserAgentHeadless = navigator.userAgent.includes('HeadlessChrome');
   if (isUserAgentHeadless === true) {
-    return '?env=test';
+    environment = '?env=test';
   }else
   {
-    return '';
+    environment = '?env=development';
   }
 }
 
@@ -190,7 +195,7 @@ function getFilteredExams(event){
   examsButton.classList.toggle('active');
   const token = document.getElementById('filterByToken').value;
   if (token !== '') {
-    testsUrl = `http://localhost:3000/tests/${token}` + environment();
+    testsUrl = `${baseAPIUrl}/tests/${token}${environment}`;
   } else {
     location.reload();
   }
@@ -254,7 +259,6 @@ function getFilteredExams(event){
   });
 }
 
-
 function getJobStatus(tokenUrl){
   fetch(tokenUrl)
     .then((response) => response.json())
@@ -287,7 +291,7 @@ async function sendFile(event) {
     const importData = await importResponse.text();
     const parsedData = JSON.parse(importData);
     const token = parsedData.token;
-    const jobStatusUrl = `http://localhost:3000/job_status/${token}`;
+    const jobStatusUrl = `${baseAPIUrl}/job_status/${token}`;
     if (parsedData.conversion_error) {
       uploadStatus.textContent = parsedData.conversion_error;
       uploadStatus.style.color = '#dc3545'
