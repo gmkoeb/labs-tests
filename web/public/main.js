@@ -298,10 +298,11 @@ async function sendFile(event) {
     }else{
       uploadStatus.style.color = '#28a745'
       uploadStatus.textContent = 'Conversão de dados iniciada'
+
       await new Promise(r => setTimeout(r, 1000));
   
       await waitForJobCompletion(jobStatusUrl);
-      getTests();
+
       uploadStatus.textContent = 'Conversão concluída'
     }
   } catch (error) {
@@ -311,11 +312,12 @@ async function sendFile(event) {
 
 async function waitForJobCompletion(jobStatusUrl) {
   while (true) {
+    getTests();
     const jobStatus = await getJobStatus(jobStatusUrl);
     if (jobStatus === 'done') {
+      getTests();
       break;
     }
-
     await new Promise(resolve => setTimeout(resolve, 1000));
   }
 }
