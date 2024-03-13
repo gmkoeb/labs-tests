@@ -42,7 +42,7 @@ RSpec.describe Doctor, type: :model do
   end
 
   describe '#create' do
-    it 'cria médico' do
+    it 'cria médico com sucesso' do
       Doctor.create(name: 'Doutor', email: 'doutor@email.com',
                     crm: 'ABC123', crm_state: 'TE')
 
@@ -50,6 +50,28 @@ RSpec.describe Doctor, type: :model do
       expect(Doctor.last.email).to eq 'doutor@email.com'
       expect(Doctor.last.crm).to eq 'ABC123'
       expect(Doctor.last.crm_state).to eq 'TE'
+    end
+
+    it 'email deve ser único' do
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com',
+                    crm: 'ABC123', crm_state: 'TE')
+      doctor = Doctor.create(name: 'Doutor Não criado', email: 'doutor@email.com',
+                             crm: 'ABC123', crm_state: 'TE')
+
+      expect(Doctor.last.name).to eq 'Doutor'
+      expect(doctor[:error]).to include 'duplicate key value violates unique constraint "doctors_email_key"'
+      expect(doctor[:error]).to include 'Key (email)=(doutor@email.com) already exists.'
+    end
+
+    it 'crm deve ser único para cada estado' do
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com',
+                    crm: 'ABC123', crm_state: 'TE')
+      doctor = Doctor.create(name: 'Doutor Não criado', email: 'doutor2@email.com',
+                             crm: 'ABC123', crm_state: 'TE')
+
+      expect(Doctor.last.name).to eq 'Doutor'
+      expect(doctor[:error]).to include 'Key (crm, crm_state)=(ABC123, TE) already exists'
+      expect(doctor[:error]).to include 'duplicate key value violates unique constraint "doctors_crm_crm_state_key"'
     end
   end
 end

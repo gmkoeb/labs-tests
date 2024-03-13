@@ -56,5 +56,31 @@ RSpec.describe Patient, type: :model do
       expect(Patient.last.city).to eq 'Cidade dos Testes'
       expect(Patient.last.state).to eq 'Estado dos Testes'
     end
+
+    it 'email deve ser único' do
+      Patient.create(name: 'Paciente', email: 'paciente@email.com', registration_number: '123456',
+                     birth_date: '1997-01-17', address: 'Rua dos Testes 153', city: 'Cidade dos Testes',
+                     state: 'Estado dos Testes')
+      patient = Patient.create(name: 'Paciente Não criado', email: 'paciente@email.com', registration_number: 'ABC123D',
+                               birth_date: '1997-01-17', address: 'Rua dos Testes 153', city: 'Cidade dos Testes',
+                               state: 'Estado dos Testes')
+
+      expect(Patient.last.name).to eq 'Paciente'
+      expect(patient[:error]).to include 'duplicate key value violates unique constraint "patients_email_key"'
+      expect(patient[:error]).to include 'Key (email)=(paciente@email.com) already exists.'
+    end
+
+    it 'cpf deve ser único' do
+      Patient.create(name: 'Paciente', email: 'paciente@email.com', registration_number: '123456',
+                     birth_date: '1997-01-17', address: 'Rua dos Testes 153', city: 'Cidade dos Testes',
+                     state: 'Estado dos Testes')
+      patient = Patient.create(name: 'Paciente Não criado', email: 'paciente2@email.com', registration_number: '123456',
+                               birth_date: '1997-01-17', address: 'Rua dos Testes 153', city: 'Cidade dos Testes',
+                               state: 'Estado dos Testes')
+
+      expect(Patient.last.name).to eq 'Paciente'
+      expect(patient[:error]).to include 'duplicate key value violates unique constraint "patients_registration_number_key"'
+      expect(patient[:error]).to include 'Key (registration_number)=(123456) already exists.'
+    end
   end
 end

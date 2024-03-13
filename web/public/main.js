@@ -1,7 +1,7 @@
 let environment = '';
 const baseAPIUrl = 'http://localhost:3000'
 
-getEnvironment();
+setEnvironment();
 
 let testsUrl = `${baseAPIUrl}/tests${environment}`;
 const doctorsUrl = `${baseAPIUrl}/doctors${environment}`;
@@ -72,7 +72,7 @@ function getTests() {
   });
 }
 
-function getEnvironment() {
+function setEnvironment() {
   const isUserAgentHeadless = navigator.userAgent.includes('HeadlessChrome');
   if (isUserAgentHeadless === true) {
     environment = '?env=test';

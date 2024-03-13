@@ -42,7 +42,7 @@ class Doctor < Application
           [attributes[:name], attributes[:email], attributes[:crm], attributes[:crm_state]])
         doctor = last
       rescue PG::Error => e
-        { error: "Error executing SQL query: #{e.message}" }
+        doctor = { error: "#{e.message}" }
       end
     end
     doctor

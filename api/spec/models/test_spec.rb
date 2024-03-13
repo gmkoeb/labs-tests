@@ -259,5 +259,20 @@ RSpec.describe Test, type: :model do
       expect(Test.last.patient.registration_number).to eq '123456'
       expect(Test.last.token).to eq 'abc123'
     end
+
+    it 'tipo de exame deve ser único para cada token' do
+      Patient.create(name: 'Paciente', email: 'paciente@email.com', registration_number: '123456',
+                     birth_date: '1997-01-17', address: 'Rua dos Testes 153', city: 'Cidade dos Testes',
+                     state: 'Estado dos Testes')
+      Doctor.create(name: 'Doutor', email: 'doutor@email.com',
+                    crm: 'ABC123', crm_state: 'TE')
+      Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                  type_limits: '97-102', type_result: '412')
+      test = Test.create(patient_id: 1, doctor_id: 1, token: 'abc123', date: '2022-01-03', type: 'hemácias',
+                         type_limits: '97-102', type_result: '412')
+
+      expect(test[:error]).to include 'duplicate key value violates unique constraint "tests_token_type_key"'
+      expect(test[:error]).to include 'Key (token, type)=(abc123, hemácias) already exists.'
+    end
   end
 end

@@ -48,11 +48,12 @@ class Patient < Application
           VALUES ($1, $2, $3, $4, $5, $6, $7)',
           [attributes[:registration_number], attributes[:name], attributes[:email],
            attributes[:birth_date], attributes[:address], attributes[:city], attributes[:state]])
+        patient = last
       rescue PG::Error => e
-        { error: "Error executing SQL query: #{e.message}" }
+        patient = { error: "#{e.message}" }
       end
     end
-    patient = last
+    patient
   end
 
   def tests

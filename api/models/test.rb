@@ -47,10 +47,11 @@ class Test < Application
           type_limits,
           type_result)
           VALUES ($1, $2, $3, $4, $5, $6, $7)',
-          [attributes[:patient_id], attributes[:doctor_id], attributes[:token], attributes[:date], attributes[:type], attributes[:type_limits], attributes[:type_result]])
+          [attributes[:patient_id], attributes[:doctor_id], attributes[:token],
+          attributes[:date], attributes[:type], attributes[:type_limits], attributes[:type_result]])
         test = last
       rescue PG::Error => e
-        { error: "Error executing SQL query: #{e.message}" }
+        test = { error: "Error executing SQL query: #{e.message}" }
       end
     end
     test
