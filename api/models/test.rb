@@ -88,7 +88,7 @@ class Test < Application
       begin
         tests = connection.exec('
         SELECT
-        tests.token, tests.date, patients.registration_number,
+        tests.id, tests.token, tests.date, patients.registration_number,
         patients.name AS patient_name, patients.email AS patient_email,
         patients.birth_date, doctors.crm, doctors.crm_state, doctors.name AS doctor_name,
         tests.type, tests.type_limits, tests.type_result
@@ -170,6 +170,7 @@ class Test < Application
         },
         tests: tests.map do |test|
           {
+            id: test['id'],
             type: test['type'],
             type_limits: test['type_limits'],
             type_result: test['type_result']
