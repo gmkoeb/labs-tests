@@ -266,17 +266,6 @@ function getFilteredExams(event){
   });
 }
 
-function getJobStatus(tokenUrl){
-  fetch(tokenUrl)
-    .then((response) => response.json())
-    .then((data) => {
-      return JSON.parse(data)
-    })
-    .catch(function(error) {
-      console.log(error);
-  });
-}
-
 async function sendFile(event) {
   event.preventDefault();
   const formData = new FormData();
